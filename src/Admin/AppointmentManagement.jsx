@@ -172,6 +172,9 @@ function AppointmentManagement() {
                 <th className="text-left py-4 px-6 text-sm font-semibold text-gray-600">
                   Date
                 </th>
+                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-600">
+                  Time
+                </th>
 
                 <th className="text-left py-4 px-6 text-sm font-semibold text-gray-600">
                   Status
@@ -211,6 +214,10 @@ function AppointmentManagement() {
                     </td>
 
                     <td className="py-4 px-6">
+                      {appointment.appointment_time || "—"}
+                    </td>
+
+                    <td className="py-4 px-6">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold
                         ${
@@ -229,7 +236,9 @@ function AppointmentManagement() {
 
                     <td className="py-4 px-6">
                       <div className="flex gap-2">
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm">
+                        <button 
+                        onClick={() => navigate(`/Admin/viewappointment/${appointment.id}`)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm">
                           View
                         </button>
 

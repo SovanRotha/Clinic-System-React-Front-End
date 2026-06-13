@@ -18,9 +18,7 @@ const NAV_ITEMS = [
   { label: "Doctor Management",      icon: <Stethoscope size={18} />,     path: "/admin/doctors"       },
   { label: "Patient Management",     icon: <UserRound size={18} />,       path: "/admin/patients"      },
   { label: "Appointment Management", icon: <CalendarClock size={18} />,   path: "/admin/appointments"  },
-  { label: "Billing & Payments",     icon: <CreditCard size={18} />,      path: "/admin/bill"       },
-  { label: "Reports & Analytics",    icon: <BarChart2 size={18} />,       path: "/admin/reports"       },
-  { label: "Settings",               icon: <Settings size={18} />,        path: "/admin/settings"      },
+  { label: "Billing & Payments",     icon: <CreditCard size={18} />,      path: "/admin/bill"       }
 ];
 
 export default function AdminSidebar() {
