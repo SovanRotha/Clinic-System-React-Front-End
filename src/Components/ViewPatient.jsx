@@ -35,6 +35,32 @@ export default function ViewPatient() {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("profile");
 
+  const normalizeRecords = (payload) => {
+    if (Array.isArray(payload?.data)) return payload.data;
+    if (Array.isArray(payload)) return payload;
+    return [];
+  };
+
+  const filterByPatient = (records) => {
+    return records.filter((item) =>
+      String(item.patient_id) === String(id) || String(item.patient?.id) === String(id)
+    );
+  };
+
+  const fetchRecords = async (url, token) => {
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Fetch failed (${response.status}): ${text}`);
+    }
+
+    const payload = await response.json();
+    return filterByPatient(normalizeRecords(payload));
+  };
+
   const fetchAllData = async () => {
     const token = localStorage.getItem("token");
     if (!id || !token) {
@@ -44,46 +70,33 @@ export default function ViewPatient() {
     }
 
     try {
-      const [patientRes, appointmentsRes, consultationsRes, prescriptionsRes, billsRes] = await Promise.all([
-        fetch(`http://127.0.0.1:8000/api/patients/${id}`, {
-          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-        }),
-        fetch(`http://127.0.0.1:8000/api/appointment?patient_id=${id}`, {
-          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-        }).catch(() => null),
-        fetch(`http://127.0.0.1:8000/api/consultation?patient_id=${id}`, {
-          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-        }).catch(() => null),
-        fetch(`http://127.0.0.1:8000/api/prescription?patient_id=${id}`, {
-          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-        }).catch(() => null),
-        fetch(`http://127.0.0.1:8000/api/bill?patient_id=${id}`, {
-          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-        }).catch(() => null),
+      const patientResponse = await fetch(`http://127.0.0.1:8000/api/patients/${id}`, {
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+      });
+
+      if (!patientResponse.ok) {
+        const text = await patientResponse.text();
+        throw new Error(`Unable to load patient profile (${patientResponse.status}): ${text}`);
+      }
+
+      const patientData = await patientResponse.json();
+      const patientRecord = patientData.data || patientData;
+      setPatient(patientRecord);
+
+      const [appointmentList, consultationList, prescriptionList, billList] = await Promise.all([
+        fetchRecords(`http://127.0.0.1:8000/api/appointment?patient_id=${id}`, token),
+        fetchRecords(`http://127.0.0.1:8000/api/consultation?patient_id=${id}`, token),
+        fetchRecords(`http://127.0.0.1:8000/api/prescription?patient_id=${id}`, token),
+        fetchRecords(`http://127.0.0.1:8000/api/bill?patient_id=${id}`, token),
       ]);
 
-      const patientData = await patientRes.json();
-      setPatient(patientData.data || patientData);
-
-      if (appointmentsRes?.ok) {
-        const data = await appointmentsRes.json();
-        setAppointments(Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : []);
-      }
-      if (consultationsRes?.ok) {
-        const data = await consultationsRes.json();
-        setConsultations(Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : []);
-      }
-      if (prescriptionsRes?.ok) {
-        const data = await prescriptionsRes.json();
-        setPrescriptions(Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : []);
-      }
-      if (billsRes?.ok) {
-        const data = await billsRes.json();
-        setBills(Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : []);
-      }
+      setAppointments(appointmentList);
+      setConsultations(consultationList);
+      setPrescriptions(prescriptionList);
+      setBills(billList);
     } catch (err) {
       console.error(err);
-      setError("Failed to load patient data.");
+      setError(err.message || "Failed to load patient data.");
     } finally {
       setLoading(false);
     }
@@ -370,7 +383,7 @@ export default function ViewPatient() {
                       {bills.map((bill, idx) => (
                         <tr key={idx} style={{ borderBottom: "1px solid #E2E6EF" }}>
                           <td style={{ padding: "12px", color: "#1A2236", fontWeight: 600 }}>#{bill.id}</td>
-                          <td style={{ padding: "12px", color: "#1A2236" }}>{fmtDate(bill.bill_date)}</td>
+                          <td style={{ padding: "12px", color: "#1A2236" }}>{fmtDate(bill.created_at)}</td>
                           <td style={{ padding: "12px", color: "#1A2236", fontWeight: 600 }}>RS {fmt(bill.total_amount)}</td>
                           <td style={{ padding: "12px" }}>
                             <span style={{ ...statusStyle[bill.payment_status?.toLowerCase() || "unpaid"], padding: "3px 10px", borderRadius: "12px", fontSize: "11px", fontWeight: 600 }}>{bill.payment_status || "Unpaid"}</span>

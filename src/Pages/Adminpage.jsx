@@ -17,6 +17,7 @@ import ViewAppointment from "../Components/ViewAppointment";
 import EditBill from "../Components/EditBill";
 import AddBill from "../Components/AddBill";
 import ViewBill from "../Components/ViewBill";
+import AddPatient from "../Components/AddPatient";
 
 function Admin() {
   return (
@@ -26,6 +27,7 @@ function Admin() {
       <Route path="/editusers/:id" element={<EditUser />} />
       <Route path="/adduser" element={<AddUser/>} />
       <Route path="/patients" element={<PatientManagement />} />
+      <Route path="/addpatient" element={<AddPatient />} />
       <Route path="/doctors" element={<DoctorManagement />} />
       <Route path="/adddoctor" element={<AddDoctor />} />
       <Route path="/editdoctor/:id" element={<EditDoctor />} />
