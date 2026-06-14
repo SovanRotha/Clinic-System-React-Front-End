@@ -1,4 +1,4 @@
-import AdminSidebar from "../Admin/AdminSidebar";
+
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -34,7 +34,7 @@ function ViewBill() {
     if (!bill) {
         return (
             <div className="flex">
-                <AdminSidebar />
+                
                 <div className="p-6">Loading bill details...</div>
             </div>
         );
@@ -42,7 +42,7 @@ function ViewBill() {
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            <AdminSidebar />
+        
 
             <div className="flex-1 p-6">
                 <h1 className="text-3xl font-bold mb-6">Bill Details</h1>
@@ -148,6 +148,10 @@ function ViewBill() {
                             {bill.appointment?.status || "N/A"}
                         </p>
                     </div>
+
+                    <button className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Download Invoice (Coming Soon)
+                    </button>
                 </div>
             </div>
         </div>

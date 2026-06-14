@@ -1,4 +1,4 @@
-import AdminSidebar from "../Admin/AdminSidebar";
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -109,7 +109,7 @@ function EditDoctor() {
     if (loading) {
         return (
             <div className="flex">
-                <AdminSidebar />
+                
                 <div className="p-8">
                     <h2>Loading doctor details...</h2>
                 </div>
@@ -119,8 +119,7 @@ function EditDoctor() {
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            <AdminSidebar />
-
+            
             <div className="flex-1 p-8">
                 <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-8">
                     <h1 className="text-3xl font-bold mb-2">

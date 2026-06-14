@@ -1,4 +1,4 @@
-import AdminSidebar from "../Admin/AdminSidebar";
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -55,7 +55,7 @@ function AddAppointment() {
 
   return (
     <div className="flex min-h-screen bg-[#F4F7FC]">
-      <AdminSidebar />
+      
 
       <div className="flex-1 p-8">
         {/* Header */}

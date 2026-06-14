@@ -146,7 +146,7 @@ const styles = {
     gap: 7,
   },
   btnBook: {
-    background: "#185FA5",
+    background: "#2563eb",
     color: "#fff",
     border: "none",
     padding: "10px 18px",
@@ -236,7 +236,7 @@ function TabButton({ label, active, count, onClick }) {
         fontWeight: active ? 600 : 400,
         cursor: "pointer",
         border: active ? "none" : "1px solid #E5E7EB",
-        background: active ? "#185FA5" : "#fff",
+        background: active ? "#2563eb" : "#fff",
         color: active ? "#fff" : "#6B7280",
         transition: "all 0.15s",
       }}
@@ -246,7 +246,7 @@ function TabButton({ label, active, count, onClick }) {
   );
 }
 
-function AppointmentManagement() {
+function ReceptionistAppointment() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [appointments, setAppointments] = useState([]);
@@ -325,7 +325,7 @@ function AppointmentManagement() {
         {/* Breadcrumb */}
         <div style={styles.breadcrumb}>
           Dashboard &nbsp;›&nbsp;{" "}
-          <span style={{ color: "#185FA5" }}>Appointments</span>
+          <span style={{ color: "#2563eb" }}>Appointments</span>
         </div>
 
         {/* Top bar */}
@@ -343,7 +343,7 @@ function AppointmentManagement() {
             </button>
             <button
               style={styles.btnBook}
-              onClick={() => navigate("/admin/addappointment")}
+              onClick={() => navigate("/receptionist/addappointment")}
             >
               <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M12 14v4M10 16h4"/></svg>
               Book Appointment
@@ -485,13 +485,13 @@ function AppointmentManagement() {
                         <td style={styles.td}>
                           <div style={{ display:"flex", gap:7 }}>
                             <button
-                              onClick={() => navigate(`/admin/viewappointment/${appt.id}`)}
-                              style={{ background:"#EFF6FF", color:"#185FA5", border:"none", padding:"8px 14px", borderRadius:8, fontSize:13, fontWeight:600, cursor:"pointer" }}
+                              onClick={() => navigate(`/receptionist/viewappointment/${appt.id}`)}
+                              style={{ background:"#EFF6FF", color:"#1D4ED8", border:"none", padding:"8px 14px", borderRadius:8, fontSize:13, fontWeight:600, cursor:"pointer" }}
                             >
                               View
                             </button>
                             <button
-                              onClick={() => navigate(`/admin/editappointment/${appt.id}`)}
+                              onClick={() => navigate(`/receptionist/editappointment/${appt.id}`)}
                               style={{ background:"#F0FDF4", color:"#15803D", border:"none", padding:"8px 14px", borderRadius:8, fontSize:13, fontWeight:600, cursor:"pointer" }}
                             >
                               Edit
@@ -526,7 +526,7 @@ function AppointmentManagement() {
         <div style={{ ...styles.sideCard, display:"flex", alignItems:"center", gap:12 }}>
           <div style={{
             width:44, height:44, borderRadius:"50%",
-            background:"#DBEAFE", color:"#185FA5",
+            background:"#DBEAFE", color:"#1D4ED8",
             display:"flex", alignItems:"center", justifyContent:"center",
             fontSize:16, fontWeight:700, flexShrink:0,
           }}>
@@ -543,7 +543,7 @@ function AppointmentManagement() {
 
         {/* Check Doctor Availability */}
         <div style={{
-          background:"#185FA5", borderRadius:14, padding:"18px",
+          background:"#2563eb", borderRadius:14, padding:"18px",
           color:"#fff", display:"flex", flexDirection:"column", gap:10,
         }}>
           <div style={{ fontSize:16, fontWeight:700 }}>Check Doctor Availability</div>
@@ -551,7 +551,7 @@ function AppointmentManagement() {
             View real-time slots for emergency bookings.
           </div>
           <button style={{
-            background:"#fff", color:"#185FA5", border:"none",
+            background:"#fff", color:"#2563eb", border:"none",
             borderRadius:8, padding:"10px 0", fontSize:13, fontWeight:700,
             cursor:"pointer", width:"100%",
           }}>
@@ -603,4 +603,4 @@ function AppointmentManagement() {
   );
 }
 
-export default AppointmentManagement;
+export default ReceptionistAppointment;

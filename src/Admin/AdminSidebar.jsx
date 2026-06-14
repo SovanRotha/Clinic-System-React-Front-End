@@ -13,12 +13,42 @@ import {
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { label: "Dashboard",              icon: <LayoutDashboard size={18} />, path: "/admin"    },
-  { label: "User Management",        icon: <Users size={18} />,           path: "/admin/users"         },
-  { label: "Doctor Management",      icon: <Stethoscope size={18} />,     path: "/admin/doctors"       },
-  { label: "Patient Management",     icon: <UserRound size={18} />,       path: "/admin/patients"      },
-  { label: "Appointment Management", icon: <CalendarClock size={18} />,   path: "/admin/appointments"  },
-  { label: "Billing & Payments",     icon: <CreditCard size={18} />,      path: "/admin/bill"       }
+  {
+    label: "Dashboard",
+    icon: <LayoutDashboard size={18} />,
+    path: "/admin",
+    matchPaths: ["/admin"],
+  },
+  {
+    label: "User Management",
+    icon: <Users size={18} />,
+    path: "/admin/users",
+    matchPaths: ["/admin/users", "/admin/adduser", "/admin/editusers"],
+  },
+  {
+    label: "Doctor Management",
+    icon: <Stethoscope size={18} />,
+    path: "/admin/doctors",
+    matchPaths: ["/admin/doctors", "/admin/adddoctor", "/admin/editdoctor"],
+  },
+  {
+    label: "Patient Management",
+    icon: <UserRound size={18} />,
+    path: "/admin/patients",
+    matchPaths: ["/admin/patients", "/admin/addpatient", "/admin/editpatient", "/admin/viewpatient"],
+  },
+  {
+    label: "Appointment Management",
+    icon: <CalendarClock size={18} />,
+    path: "/admin/appointments",
+    matchPaths: ["/admin/appointments", "/admin/addappointment", "/admin/editappointment", "/admin/viewappointment"],
+  },
+  {
+    label: "Billing & Payments",
+    icon: <CreditCard size={18} />,
+    path: "/admin/bill",
+    matchPaths: ["/admin/bill", "/admin/addbill", "/admin/editbill", "/admin/viewbill"],
+  },
 ];
 
 export default function AdminSidebar() {
@@ -26,8 +56,14 @@ export default function AdminSidebar() {
     const location = useLocation();
   
     const getActiveId = (pathname) => {
-      const sorted = [...NAV_ITEMS].sort((a, b) => b.path.length - a.path.length);
-      const match = sorted.find((item) => pathname === item.path || pathname.startsWith(item.path + "/"));
+      const sorted = [...NAV_ITEMS].sort((a, b) => {
+        const aLen = Math.max(...a.matchPaths.map((path) => path.length));
+        const bLen = Math.max(...b.matchPaths.map((path) => path.length));
+        return bLen - aLen;
+      });
+      const match = sorted.find((item) =>
+        item.matchPaths.some((matchPath) => pathname === matchPath || pathname.startsWith(matchPath + "/"))
+      );
       return match ? match.path : "/admin";
     };
 

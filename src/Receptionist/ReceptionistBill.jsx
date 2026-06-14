@@ -248,7 +248,7 @@ function TxIcon({ type, bg, color }) {
 
 const PAGE_SIZE = 8;
 
-export default function BillManagement() {
+export default function ReceptionistBilling() {
   const navigate = useNavigate();
   const [bills, setBills] = useState([]);
   const [search, setSearch] = useState("");
@@ -645,13 +645,13 @@ export default function BillManagement() {
                           <div style={{ display: "flex", gap: 6 }}>
                             <button
                               style={S.actionBtn}
-                              onClick={() => navigate(`/admin/viewbill/${bill.id}`)}
+                              onClick={() => navigate(`/receptionist/viewbill/${bill.id}`)}
                             >
                               View
                             </button>
                             <button
                               style={{ ...S.actionBtn, color: "#0F6E56", background: "#E1F5EE", border: "none" }}
-                              onClick={() => navigate(`/admin/editbill/${bill.id}`)}
+                              onClick={() => navigate(`/receptionist/editbill/${bill.id}`)}
                             >
                               Edit
                             </button>
@@ -786,7 +786,7 @@ export default function BillManagement() {
                   fontWeight: 500,
                   cursor: "pointer",
                 }}
-                onClick={() => navigate("/admin/bills/activity")}
+                onClick={() => navigate("/receptionist/bills/activity")}
               >
                 View All Activity
               </div>

@@ -18,29 +18,39 @@ import EditBill from "../Components/EditBill";
 import AddBill from "../Components/AddBill";
 import ViewBill from "../Components/ViewBill";
 import AddPatient from "../Components/AddPatient";
+import AdminSidebar from "../Admin/AdminSidebar";
 
 function Admin() {
   return (
     <Routes>
-      <Route path="/" element={<AdminDashboard />} />
-      <Route path="/users" element={<UserManagement />} />
-      <Route path="/editusers/:id" element={<EditUser />} />
-      <Route path="/adduser" element={<AddUser/>} />
-      <Route path="/patients" element={<PatientManagement />} />
-      <Route path="/addpatient" element={<AddPatient />} />
-      <Route path="/doctors" element={<DoctorManagement />} />
-      <Route path="/adddoctor" element={<AddDoctor />} />
-      <Route path="/editdoctor/:id" element={<EditDoctor />} />
-      <Route path="/viewpatient/:id" element={<ViewPatient />} />
-      <Route path="/editpatient/:id" element={<EditPatient />} />
-      <Route path="/appointments" element={<AppointmentManagement />} />
-      <Route path="/addappointment" element={<AddAppointment />} />
-      <Route path="/editappointment/:id" element={<EditAppointment />} />
-      <Route path="/viewappointment/:id" element={<ViewAppointment />} />
-      <Route path="/bill" element={<BillingManagement />} />
-      <Route path="/editbill/:id" element={<EditBill />} />
-      <Route path="/addbill" element={<AddBill />} />
-      <Route path="/viewbill/:id" element={<ViewBill />} />
+      <Route path="/*" element={
+        <div style={{ display: "flex", minHeight: "100vh", background: "#F4F6FA" }}>
+          <AdminSidebar />
+          <div style={{ flex: 1 }}>
+            <Routes>
+              <Route path="/" element={<AdminDashboard />} />
+              <Route path="/users" element={<UserManagement />} />
+              <Route path="/editusers/:id" element={<EditUser />} />
+              <Route path="/adduser" element={<AddUser/>} />
+              <Route path="/patients" element={<PatientManagement />} />
+              <Route path="/addpatient" element={<AddPatient />} />
+              <Route path="/doctors" element={<DoctorManagement />} />
+              <Route path="/adddoctor" element={<AddDoctor />} />
+              <Route path="/editdoctor/:id" element={<EditDoctor />} />
+              <Route path="/viewpatient/:id" element={<ViewPatient />} />
+              <Route path="/editpatient/:id" element={<EditPatient />} />
+              <Route path="/appointments" element={<AppointmentManagement />} />
+              <Route path="/addappointment" element={<AddAppointment />} />
+              <Route path="/editappointment/:id" element={<EditAppointment />} />
+              <Route path="/viewappointment/:id" element={<ViewAppointment />} />
+              <Route path="/bill" element={<BillingManagement />} />
+              <Route path="/editbill/:id" element={<EditBill />} />
+              <Route path="/addbill" element={<AddBill />} />
+              <Route path="/viewbill/:id" element={<ViewBill />} />
+            </Routes>
+          </div>
+        </div>
+      } />
     </Routes>
   );
 }   

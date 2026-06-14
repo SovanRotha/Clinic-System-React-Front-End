@@ -1,4 +1,4 @@
-import AdminSidebar from "../Admin/AdminSidebar";
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -120,7 +120,7 @@ function EditPatient() {
     
 
       <div style={{ display: "flex" }}>
-        <AdminSidebar />
+        
 
         <div
           style={{

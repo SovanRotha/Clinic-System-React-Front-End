@@ -1,4 +1,4 @@
-import AdminSidebar from "./AdminSidebar";
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -135,8 +135,7 @@ function DoctorManagement() {
 
     return (
         <div style={{ display: "flex", background: "#F4F6FA", minHeight: "100vh" }}>
-            <AdminSidebar />
-
+            
             <main style={{ flex: 1, padding: "0", display: "flex", flexDirection: "column" }}>
                 {/* Top Bar */}
                 <div style={{

@@ -1,4 +1,4 @@
-import AdminSidebar from "../Admin/AdminSidebar";
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -119,7 +119,7 @@ function EditUser() {
   if (loading) {
     return (
       <div style={{ display: "flex", minHeight: "100vh", background: "#F4F6FA" }}>
-        <AdminSidebar />
+        
         <main style={{ flex: 1, display: "flex", flexDirection: "column" }}>
           <div style={{ background: "#fff", borderBottom: "0.5px solid #E2E6EF", height: "56px", display: "flex", alignItems: "center", padding: "0 28px" }}>
             <span style={{ fontSize: "16px", fontWeight: 600, color: "#185FA5" }}>User Management</span>
@@ -140,7 +140,7 @@ function EditUser() {
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#F4F6FA" }}>
-      <AdminSidebar />
+      
 
       <main style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {/* Top Bar */}

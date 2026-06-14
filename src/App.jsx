@@ -31,7 +31,7 @@ function App() {
             <Doctorpage />
           </ProtectedRoute>
         } />
-        <Route path="/receptionist" element={
+        <Route path="/receptionist/*" element={
           <ProtectedRoute allowedRole={["receptionist", "admin"]}>
             <Receptionistpage />
           </ProtectedRoute>

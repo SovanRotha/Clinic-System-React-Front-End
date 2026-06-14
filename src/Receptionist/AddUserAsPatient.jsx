@@ -1,13 +1,13 @@
 
 import { useState } from "react";
 
-function AddUser() {
+function AddUserAsPatient() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     phone_number: "",
-    role: "admin",
+    role: "patient",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -40,20 +40,21 @@ function AddUser() {
       })
       .then(() => {
         showToast("success", "User added successfully!");
-        setFormData({ name: "", email: "", password: "", phone_number: "", role: "admin" });
+        setFormData({ name: "", email: "", password: "", phone_number: "", role: "patient" });
       })
       .catch((err) => showToast("error", err.message || "Something went wrong."))
       .finally(() => setSubmitting(false));
   };
 
   const handleCancel = () => {
-    setFormData({ name: "", email: "", password: "", phone_number: "", role: "admin" });
+    setFormData({ name: "", email: "", password: "", phone_number: "", role: "patient" });
   };
 
   const roleColors = {
     admin: { bg: "#E6F1FB", color: "#185FA5" },
     doctor: { bg: "#EAF3DE", color: "#3B6D11" },
     receptionist: { bg: "#EEEDFE", color: "#534AB7" },
+    patient: { bg: "#F0F0F0", color: "#333" },
   };
 
   return (
@@ -245,9 +246,7 @@ function AddUser() {
                           onFocus={e => e.target.style.borderColor = "#185FA5"}
                           onBlur={e => e.target.style.borderColor = "#D8DDE8"}
                         >
-                          <option value="admin">Admin</option>
-                          <option value="doctor">Doctor</option>
-                          <option value="receptionist">Receptionist</option>
+                          <option value="patient">Patient</option>
                         </select>
                         <svg style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A94A6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                       </div>
@@ -367,4 +366,4 @@ const inputStyle = {
   boxSizing: "border-box",
 };
 
-export default AddUser;
+export default AddUserAsPatient;

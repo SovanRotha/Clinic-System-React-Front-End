@@ -1,4 +1,4 @@
-import AdminSidebar from "../Admin/AdminSidebar";
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -94,7 +94,7 @@ function AddBill() {
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            <AdminSidebar />
+           
 
             <div className="flex-1 p-6">
                 <h1 className="text-3xl font-bold mb-6">Add New Bill</h1>
