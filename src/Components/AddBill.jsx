@@ -18,10 +18,13 @@ function AddBill() {
 
     // Fetch patients + appointments
     useEffect(() => {
-        const token = localStorage.getItem("token");
-
         const fetchData = async () => {
             try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    throw new Error("Missing authentication token.");
+                }
+
                 const [pRes, aRes] = await Promise.all([
                     fetch("http://127.0.0.1:8000/api/patients", {
                         headers: {
@@ -37,13 +40,18 @@ function AddBill() {
                     }),
                 ]);
 
-                const pData = await pRes.json();
-                const aData = await aRes.json();
+                if (!pRes.ok || !aRes.ok) {
+                    throw new Error("Failed to load related records.");
+                }
+
+                const pData = await pRes.json().catch(() => ({}));
+                const aData = await aRes.json().catch(() => ({}));
 
                 setPatients(pData.data || []);
                 setAppointments(aData.data || []);
             } catch (error) {
                 console.error("Error loading data:", error);
+                alert(error.message || "Failed to load bill form data.");
             }
         };
 
@@ -62,15 +70,18 @@ function AddBill() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem("token");
-
-        const payload = {
-            ...formData,
-            consultation_fee: parseFloat(formData.consultation_fee),
-            medicine_fee: parseFloat(formData.medicine_fee),
-        };
-
         try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                throw new Error("Missing authentication token.");
+            }
+
+            const payload = {
+                ...formData,
+                consultation_fee: parseFloat(formData.consultation_fee),
+                medicine_fee: parseFloat(formData.medicine_fee),
+            };
+
             const res = await fetch("http://127.0.0.1:8000/api/bill", {
                 method: "POST",
                 headers: {
@@ -81,14 +92,16 @@ function AddBill() {
                 body: JSON.stringify(payload),
             });
 
-            if (res.ok) {
-                alert("Bill created successfully!");
-                navigate("/admin/bill");
-            } else {
-                alert("Failed to create bill");
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                throw new Error(data.message || "Failed to create bill");
             }
+
+            alert("Bill created successfully!");
+            navigate("/admin/bill");
         } catch (error) {
             console.error("Error:", error);
+            alert(error.message || "Unable to create bill.");
         }
     };
 

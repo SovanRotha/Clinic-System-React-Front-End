@@ -1,4 +1,5 @@
 
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -184,7 +185,7 @@ function UserManagement() {
               </p>
             </div>
             <button
-              onClick={() => navigate("/admin/adduser")}
+              onClick={() => navigate("/receptionist/adduser")}
               style={{
                 display: "flex", alignItems: "center", gap: 6,
                 padding: "10px 18px", background: "#185FA5", color: "#E6F1FB",
@@ -424,7 +425,7 @@ function UserManagement() {
                           <td style={{ padding: "10px 12px" }}>
                             <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
                               <button
-                                onClick={() => navigate(`/admin/editusers/${user.id}`)}
+                                onClick={() => navigate(`/receptionist/edituser/${user.id}`)}
                                 style={{
                                   display: "flex", alignItems: "center", gap: 4,
                                   padding: "6px 10px", background: "#E6F1FB", color: "#185FA5",
@@ -438,7 +439,7 @@ function UserManagement() {
                                 </svg>
                                 Edit
                               </button>
-                              <button
+                              {/* <button
                                 onClick={() => handleDelete(user.id)}
                                 style={{
                                   display: "flex", alignItems: "center", gap: 4,
@@ -453,7 +454,7 @@ function UserManagement() {
                                   <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
                                 </svg>
                                 Delete
-                              </button>
+                              </button> */}
                             </div>
                           </td>
                         </tr>

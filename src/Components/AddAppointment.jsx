@@ -1,12 +1,10 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function AddAppointment() {
-
-    const navigate = useNavigate();
-    const [patients, setPatients] = useState([]);
-    const [doctors, setDoctors] = useState([]);
+  const navigate = useNavigate();
+  const [patients, setPatients] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   const [addAppointment, setAddAppointment] = useState({
     patient_id: "",
     doctor_id: "",
@@ -21,25 +19,29 @@ function AddAppointment() {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          console.error("Authentication token not found.");
-          return;
+          throw new Error("Authentication token not found.");
         }
 
-        // Fetch doctors
         const respDoctors = await fetch("http://127.0.0.1:8000/api/doctor", {
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
+        if (!respDoctors.ok) {
+          throw new Error("Failed to load doctors.");
+        }
         const dataDoctors = await respDoctors.json().catch(() => ({}));
         setDoctors(Array.isArray(dataDoctors.doctors) ? dataDoctors.doctors : Array.isArray(dataDoctors) ? dataDoctors : []);
 
-        // Fetch patients
         const respPatients = await fetch("http://127.0.0.1:8000/api/patients", {
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
+        if (!respPatients.ok) {
+          throw new Error("Failed to load patients.");
+        }
         const dataPatients = await respPatients.json().catch(() => ({}));
         setPatients(Array.isArray(dataPatients.data) ? dataPatients.data : Array.isArray(dataPatients) ? dataPatients : []);
       } catch (err) {
         console.error("Error fetching data:", err);
+        alert(err.message || "Failed to load appointment form data.");
       }
     };
 
@@ -53,75 +55,125 @@ function AddAppointment() {
     });
   };
 
-  return (
-    <div className="flex min-h-screen bg-[#F4F7FC]">
-      
+  const handleCancel = () => {
+    navigate("/Admin/appointments");
+  };
 
-      <div className="flex-1 p-8">
-        {/* Header */}
+  const handleSave = async () => {
+    if (!addAppointment.patient_id || !addAppointment.doctor_id || !addAppointment.appointment_date) {
+      alert("Please select patient, doctor and date.");
+      return;
+    }
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) { throw new Error("Missing token"); }
+      const payload = {
+        ...addAppointment,
+        patient_id: Number(addAppointment.patient_id),
+        doctor_id: Number(addAppointment.doctor_id),
+      };
+      const res = await fetch("http://127.0.0.1:8000/api/appointment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload),
+      });
+      const responseData = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(responseData?.message || responseData?.error || "Failed to save appointment");
+      }
+      alert("Appointment created successfully");
+      navigate("/Admin/appointments");
+      setAddAppointment({ patient_id: "", doctor_id: "", appointment_date: "", appointment_time: "", reason: "", status: "pending" });
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Network error");
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50/50 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        
+        {/* Header Block */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Add Appointment</h1>
-          <p className="text-gray-500 mt-2">
-            Schedule a new patient appointment
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Schedule Appointment</h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Book a new consultation slot between an active provider and patient.
           </p>
         </div>
 
-        {/* Main Card */}
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          {/* Card Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-6">
-            <h2 className="text-white text-xl font-semibold">
-              Appointment Information
-            </h2>
-            <p className="text-blue-100 mt-1">Fill in the details below</p>
-          </div>
-
-          {/* Form */}
-          <div className="p-8">
+        {/* Form Container Card */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <div className="p-6 sm:p-8 space-y-6">
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Patient */}
+              
+              {/* Patient Selection Dropdown */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Patient ID
+                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
+                  Patient File
                 </label>
-                <select
-                  name="patient_id"
-                  value={addAppointment.patient_id}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3"
-                >
-                  <option value="">Select Patient</option>
-                  {patients.map((patient) => (
-                    <option key={patient.id} value={patient.id}>
-                      {patient.patient_code || patient.user?.name || `#${patient.id}`}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    name="patient_id"
+                    value={addAppointment.patient_id}
+                    onChange={handleChange}
+                    className="w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all duration-150 appearance-none"
+                  >
+                    <option value="">Choose matching patient record...</option>
+                    {patients.map((patient) => {
+                      // Dynamically pull out name if backend maps it, otherwise cleanly present identifiers
+                      const displayCode = patient.patient_code ? `[${patient.patient_code}]` : `#${patient.id}`;
+                      const displayName = patient.user?.name || patient.name || "Unnamed Patient";
+                      
+                      return (
+                        <option key={patient.id} value={patient.id}>
+                          {displayName} {displayCode}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                  </div>
+                </div>
               </div>
 
-              {/* Doctor */}
+              {/* Doctor Selection Dropdown */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Doctor ID
+                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
+                  Assigned Doctor
                 </label>
-                <select
-                  name="doctor_id"
-                  value={addAppointment.doctor_id}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3"
-                >
-                  <option value="">Select Doctor</option>
-                  {doctors.map((doctor) => (
-                    <option key={doctor.id} value={doctor.id}>
-                      {doctor.doctor_code || doctor.user?.name || `#${doctor.id}`}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    name="doctor_id"
+                    value={addAppointment.doctor_id}
+                    onChange={handleChange}
+                    className="w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all duration-150 appearance-none"
+                  >
+                    <option value="">Choose assigned physician...</option>
+                    {doctors.map((doctor) => {
+                      // Grabs doctor name from user object structure if available, defaults beautifully
+                      const displayCode = doctor.doctor_code ? `[${doctor.doctor_code}]` : `#${doctor.id}`;
+                      const displayName = doctor.user?.name || doctor.name || "Dr. Professional";
+                      const specialization = doctor.specialization ? ` - ${doctor.specialization}` : "";
+                      
+                      return (
+                        <option key={doctor.id} value={doctor.id}>
+                          {displayName} {displayCode}{specialization}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                  </div>
+                </div>
               </div>
 
-              {/* Date */}
+              {/* Date Input */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
                   Appointment Date
                 </label>
                 <input
@@ -129,13 +181,13 @@ function AddAppointment() {
                   name="appointment_date"
                   value={addAppointment.appointment_date}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all duration-150"
                 />
               </div>
 
-              {/* Time */}
+              {/* Time Input */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
                   Appointment Time
                 </label>
                 <input
@@ -143,105 +195,73 @@ function AddAppointment() {
                   name="appointment_time"
                   value={addAppointment.appointment_time}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all duration-150"
                 />
               </div>
 
-              {/* Status */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Status
+              {/* Status Selector */}
+              <div className="md:col-span-2">
+                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
+                  Initial File Status
                 </label>
-
-                <select
-                  name="status"
-                  value={addAppointment.status}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                >
-                  <option value="pending">pending</option>
-                  <option value="confirmed">confirmed</option>
-                  <option value="completed">completed</option>
-                  <option value="cancelled">cancelled</option>
-                </select>
+                <div className="relative">
+                  <select
+                    name="status"
+                    value={addAppointment.status}
+                    onChange={handleChange}
+                    className="w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all duration-150 appearance-none capitalize"
+                  >
+                    <option value="pending">Pending Review</option>
+                    <option value="confirmed">Confirmed / Active</option>
+                    <option value="completed">Completed Visit</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                  </div>
+                </div>
               </div>
 
-              {/* Reason */}
+              {/* Reason Input */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Reason
+                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
+                  Reason for Consultation
                 </label>
-
                 <textarea
                   name="reason"
                   value={addAppointment.reason}
                   onChange={handleChange}
                   rows="4"
-                  placeholder="Enter appointment reason..."
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+                  placeholder="Summarize patient symptoms or context for medical charts..."
+                  className="w-full bg-slate-50/50 border border-slate-200 text-slate-800 rounded-xl px-4 py-3 text-sm focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition-all duration-150 resize-none placeholder-slate-400"
                 />
               </div>
             </div>
 
-            {/* Buttons */}
-            <div className="flex justify-end gap-3 mt-8">
+            {/* Action Buttons */}
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-4 border-t border-slate-100">
               <button
                 type="button"
-                className="px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition"
+                onClick={handleCancel}
+                className="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors duration-150"
               >
                 Cancel
               </button>
 
               <button
                 type="button"
-                onClick={async () => {
-                  // simple client-side validation
-                  if (!addAppointment.patient_id || !addAppointment.doctor_id || !addAppointment.appointment_date) {
-                    alert("Please select patient, doctor and date.");
-                    return;
-                  }
-                  try {
-                    const token = localStorage.getItem("token");
-                    if (!token) { alert("Missing token"); return; }
-                    const payload = {
-                      ...addAppointment,
-                      patient_id: Number(addAppointment.patient_id),
-                      doctor_id: Number(addAppointment.doctor_id),
-                    };
-                    const res = await fetch("http://127.0.0.1:8000/api/appointment", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${token}` },
-                      body: JSON.stringify(payload),
-                    });
-                    if (!res.ok) {
-                      const text = await res.text().catch(() => null);
-                      console.error("Appointment POST failed:", res.status, text);
-                      const err = (() => {
-                        try { return JSON.parse(text); } catch { return null; }
-                      })();
-                      alert(err?.message || text || "Failed to save appointment");
-                    } else {
-                      const created = await res.json().catch(() => null);
-                      console.log("Appointment created:", created);
-                      alert("Appointment created");
-                      navigate("/Admin/appointments");
-                      // reset form
-                      setAddAppointment({ patient_id: "", doctor_id: "", appointment_date: "", appointment_time: "", reason: "", status: "Pending" });
-                    }
-                  } catch (err) {
-                    console.error(err);
-                    alert("Network error");
-                  }
-                }}
-                className="px-6 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition shadow-md"
+                onClick={handleSave}
+                className="px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors duration-150 shadow-sm shadow-blue-500/10"
               >
-                Save Appointment
+                Create Appointment
               </button>
             </div>
+
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 export default AddAppointment;

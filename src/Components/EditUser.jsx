@@ -61,15 +61,23 @@ function EditUser() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) { showToast("error", "Missing authentication token."); return; }
+    const loadUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("Missing authentication token.");
+        }
 
-    fetch(`http://127.0.0.1:8000/api/users/${id}`, {
-      headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const user = data.user || data;
+        const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+        });
+
+        if (!res.ok) {
+          throw new Error("Unable to load user.");
+        }
+
+        const data = await res.json().catch(() => null);
+        const user = data?.user || data || {};
         const loaded = {
           name: user.name || "",
           email: user.email || "",
@@ -78,9 +86,14 @@ function EditUser() {
         };
         setFormData(loaded);
         setOriginalName(user.name || "");
-      })
-      .catch(() => showToast("error", "Unable to load user."))
-      .finally(() => setLoading(false));
+      } catch (err) {
+        showToast("error", err.message || "Unable to load user.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUser();
   }, [id]);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -90,6 +103,10 @@ function EditUser() {
     setSubmitting(true);
     const token = localStorage.getItem("token");
     try {
+      if (!token) {
+        throw new Error("Missing authentication token.");
+      }
+
       const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
         method: "PUT",
         headers: {
@@ -99,8 +116,8 @@ function EditUser() {
         },
         body: JSON.stringify({ ...formData, phone: formData.phone_number }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to update user");
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.message || "Failed to update user");
       showToast("success", "User updated successfully!");
       setTimeout(() => navigate("/admin/users"), 1200);
     } catch (err) {

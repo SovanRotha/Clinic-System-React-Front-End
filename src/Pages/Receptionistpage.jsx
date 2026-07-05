@@ -13,6 +13,9 @@ import AddAppointment from "../Components/AddAppointment";
 import ViewBill from "../Components/ViewBill";
 import EditBill from "../Components/EditBill";
 import AddBill from "../Components/AddBill";
+import User from "../Receptionist/User";
+import AddUser from "../Components/AddUser";
+import EditUser from "../Receptionist/EditUser";
 
 function Receptionist() {
   return (
@@ -38,6 +41,9 @@ function Receptionist() {
                   <Route path="/editpatient/:id" element={<EditPatient />} />
                   <Route path="/appointments" element={<ReceptionistAppointment />} />
                   <Route path="/addappointment" element={<AddAppointment />} />
+                  <Route path="/users" element={<User />} />
+                  <Route path="/adduser" element={<AddUser />} />
+                  <Route path="/edituser/:id" element={<EditUser />} />
                   <Route path="/editappointment/:id" element={<EditAppointment />} />
                   <Route path="/viewappointment/:id" element={<ViewAppointment />} />
                   <Route path="/bills" element={<ReceptionistBill />} />

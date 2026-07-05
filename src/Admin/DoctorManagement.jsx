@@ -67,20 +67,26 @@ function DoctorManagement() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            setError("Missing authentication token.");
-            setLoading(false);
-            return;
-        }
-        fetch("http://127.0.0.1:8000/api/doctor", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "application/json",
-            },
-        })
-            .then((res) => res.json().catch(() => null))
-            .then((data) => {
+        const loadDoctors = async () => {
+            setLoading(true);
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    throw new Error("Missing authentication token.");
+                }
+
+                const res = await fetch("http://127.0.0.1:8000/api/doctor", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: "application/json",
+                    },
+                });
+
+                if (!res.ok) {
+                    throw new Error("Unable to load doctors.");
+                }
+
+                const data = await res.json().catch(() => null);
                 const arr = Array.isArray(data)
                     ? data
                     : Array.isArray(data?.doctors)
@@ -89,9 +95,15 @@ function DoctorManagement() {
                     ? data.data
                     : [];
                 setDoctors(arr);
-            })
-            .catch(() => setError("Unable to load doctors."))
-            .finally(() => setLoading(false));
+                setError("");
+            } catch (err) {
+                setError(err.message || "Unable to load doctors.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadDoctors();
     }, []);
 
     const safeDoctors = Array.isArray(doctors) ? doctors : [];
@@ -119,18 +131,28 @@ function DoctorManagement() {
 
     const statuses = ["All", "active", "pending", "on_leave", "inactive"];
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         if (!window.confirm("Delete this doctor?")) return;
-        const token = localStorage.getItem("token");
-        fetch(`http://127.0.0.1:8000/api/doctor/${id}`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-        })
-            .then((res) => {
-                if (res.ok) setDoctors((prev) => prev.filter((d) => d.id !== id));
-                else alert("Failed to delete doctor.");
-            })
-            .catch(() => alert("Network error."));
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                throw new Error("Missing authentication token.");
+            }
+
+            const res = await fetch(`http://127.0.0.1:8000/api/doctor/${id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to delete doctor.");
+            }
+
+            setDoctors((prev) => prev.filter((d) => d.id !== id));
+            setError("");
+        } catch (err) {
+            setError(err.message || "Network error.");
+        }
     };
 
     return (

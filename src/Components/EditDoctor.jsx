@@ -25,6 +25,9 @@ function EditDoctor() {
         const fetchDoctor = async () => {
             try {
                 const token = localStorage.getItem("token");
+                if (!token) {
+                    throw new Error("Authentication token missing");
+                }
 
                 const response = await fetch(
                     `http://127.0.0.1:8000/api/doctor/${id}`,
@@ -36,26 +39,29 @@ function EditDoctor() {
                     }
                 );
 
-                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error("Failed to load doctor details");
+                }
 
-                console.log(data);
+                const data = await response.json().catch(() => ({}));
+                const doctorData = data.doctor || {};
 
                 setEditDoctor({
-                    user_id: data.doctor.user_id,
-                    doctor_code: data.doctor.doctor_code || "",
-                    name: data.doctor.user?.name || "",
-                    email: data.doctor.user?.email || "",
-                    phone_number: data.doctor.user?.phone_number || "",
-                    specialization: data.doctor.specialization || "",
-                    working_day: data.doctor.working_day || "",
-                    start_time: data.doctor.start_time?.substring(0, 5) || "",
-                    end_time: data.doctor.end_time?.substring(0, 5) || "",
-                    status: data.doctor.status || "",
+                    user_id: doctorData.user_id || "",
+                    doctor_code: doctorData.doctor_code || "",
+                    name: doctorData.user?.name || "",
+                    email: doctorData.user?.email || "",
+                    phone_number: doctorData.user?.phone_number || "",
+                    specialization: doctorData.specialization || "",
+                    working_day: doctorData.working_day || "",
+                    start_time: doctorData.start_time?.substring(0, 5) || "",
+                    end_time: doctorData.end_time?.substring(0, 5) || "",
+                    status: doctorData.status || "",
                 });
-
-                setLoading(false);
             } catch (error) {
                 console.error("Error fetching doctor:", error);
+                alert(error.message || "Failed to load doctor details");
+            } finally {
                 setLoading(false);
             }
         };

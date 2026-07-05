@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AVATAR_COLORS = [
-  { bg: "#DBEAFE", color: "#1D4ED8" },
+  { bg: "#DBEAFE", color: "#185FA5" },
   { bg: "#FCE7F3", color: "#9D174D" },
   { bg: "#D1FAE5", color: "#065F46" },
   { bg: "#FEF3C7", color: "#92400E" },
@@ -187,7 +187,7 @@ function ReceptionistPatient() {
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <svg width="20" height="20" fill="none" stroke="#6B7280" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
           <svg width="20" height="20" fill="none" stroke="#6B7280" strokeWidth="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#DBEAFE", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: "#1D4ED8" }}>
+          <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#DBEAFE", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: "#185FA5" }}>
             ES
           </div>
         </div>
@@ -212,7 +212,7 @@ function ReceptionistPatient() {
             <button
               onClick={() => navigate("/receptionist/addpatient")}
               style={{
-                background: "#2563eb", color: "#fff", border: "none",
+                background: "#185FA5", color: "#fff", border: "none",
                 padding: "10px 20px", borderRadius: 10, fontSize: 14, fontWeight: 600,
                 cursor: "pointer", display: "flex", alignItems: "center", gap: 7,
               }}
@@ -232,7 +232,7 @@ function ReceptionistPatient() {
               sub: "+12% from last month",
               subColor: "#16A34A",
               icon: (
-                <svg width="22" height="22" fill="none" stroke="#2563eb" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                <svg width="22" height="22" fill="none" stroke="#185FA5" strokeWidth="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
               ),
               iconBg: "#EFF6FF",
             },
@@ -434,7 +434,7 @@ function ReceptionistPatient() {
                     style={{
                       width: 36, height: 36, borderRadius: 8, fontSize: 14, fontWeight: n === page ? 700 : 400,
                       border: n === page ? "none" : "1px solid #E5E7EB",
-                      background: n === page ? "#2563eb" : "#fff",
+                      background: n === page ? "#185FA5" : "#fff",
                       color: n === page ? "#fff" : "#374151",
                       cursor: "pointer",
                     }}

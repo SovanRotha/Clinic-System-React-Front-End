@@ -31,8 +31,8 @@ const STATUS_STYLES = {
 };
 
 function StatusBadge({ status = "" }) {
-  const key = status.toLowerCase();
-  const style = STATUS_STYLES[key] || { bg: "#F3F4F6", color: "#374151", label: status };
+  const key = (status || "").toLowerCase();
+  const style = STATUS_STYLES[key] || { bg: "#F3F4F6", color: "#374151", label: status || "Unknown" };
   return (
     <span style={{
       background: style.bg,
@@ -259,18 +259,38 @@ function AppointmentManagement() {
       try {
         const token = localStorage.getItem("token");
         if (!token) { setError("Authentication token not found."); return; }
-        const response = await fetch("http://127.0.0.1:8000/api/appointment", {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
+        const response = Promise.all([
+          fetch("http://127.0.0.1:8000/api/appointment", {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+          }),
+          fetch("http://127.0.0.1:8000/api/patients", {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+          }),
+          fetch("http://127.0.0.1:8000/api/doctor", {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+          }),
+        ]);
+
+        const [apptRes, patRes, docRes] = await response;
+        if (!apptRes.ok || !patRes.ok || !docRes.ok) {
+          throw new Error("Failed to load appointments or related records.");
+        }
+        const data = await apptRes.json().catch(() => ({}));
         setAppointments(Array.isArray(data.data) ? data.data : []);
       } catch (err) {
         console.error("Error fetching appointments:", err);
         setError("Unable to load appointments.");
       }
+        
     };
     fetchAppointments();
   }, []);
@@ -301,15 +321,15 @@ function AppointmentManagement() {
   const countByStatus = (s) =>
     appointments.filter((a) => a.status?.toLowerCase() === s).length;
 
-  const filtered = appointments.filter((a) => {
+  const filtered = (appointments || []).filter((a) => {
     const matchTab =
-      activeTab === "all" || a.status?.toLowerCase() === activeTab;
-    const q = search.toLowerCase();
+      activeTab === "all" || (a?.status || "").toLowerCase() === activeTab;
+    const q = (search || "").toLowerCase();
     const matchSearch =
       !q ||
-      a.patient?.patient_code?.toLowerCase().includes(q) ||
-      a.doctor?.doctor_code?.toLowerCase().includes(q) ||
-      String(a.id).includes(q);
+      (a?.patient?.patient_code || "").toLowerCase().includes(q) ||
+      (a?.doctor?.doctor_code || "").toLowerCase().includes(q) ||
+      String(a?.id || "").includes(q);
     return matchTab && matchSearch;
   });
 
@@ -420,13 +440,13 @@ function AppointmentManagement() {
               <tbody>
                 {filtered.length > 0 ? (
                   filtered.map((appt, idx) => {
-                    const patientName = appt.patient?.patient_code || "Unknown";
-                    const doctorName  = appt.doctor?.doctor_code  || "Unknown";
-                    const avatarColor = getAvatarColor(appt.id ?? idx);
+                    const patientName = appt?.patient?.user?.name || appt?.patient.name || appt?.patient?.patient_code || "Unknown";
+                    const doctorName  = appt?.doctor?.user?.name || appt?.doctor?.doctor_code || "Unknown";
+                    const avatarColor = getAvatarColor(appt?.id ?? idx);
                     const initials    = getInitials(patientName);
                     return (
                       <tr
-                        key={appt.id}
+                        key={appt?.id ?? idx}
                         style={{ transition:"background 0.12s" }}
                         onMouseEnter={(e) => { Array.from(e.currentTarget.cells).forEach(c => c.style.background = "#EFF6FF"); }}
                         onMouseLeave={(e) => { Array.from(e.currentTarget.cells).forEach(c => c.style.background = ""); }}
@@ -450,7 +470,7 @@ function AppointmentManagement() {
                             <div>
                               <div style={{ fontSize:15, fontWeight:600, color:"#1F2937" }}>{patientName}</div>
                               <div style={{ fontSize:12, color:"#9CA3AF", marginTop:2 }}>
-                                {appt.patient?.phone || "—"}
+                                {appt?.patient?.phone || "—"}
                               </div>
                             </div>
                           </div>
@@ -460,44 +480,44 @@ function AppointmentManagement() {
                         <td style={styles.td}>
                           <div style={{ fontSize:15, fontWeight:600, color:"#1F2937" }}>{doctorName}</div>
                           <div style={{ fontSize:12, color:"#9CA3AF", marginTop:2 }}>
-                            {appt.doctor?.specialization || "—"}
+                            {appt?.doctor?.specialization || "—"}
                           </div>
                         </td>
 
                         {/* Date & Time */}
                         <td style={styles.td}>
                           <div style={{ fontSize:15, fontWeight:600, color:"#1F2937" }}>
-                            {appt.appointment_date
+                            {(appt?.appointment_date && !Number.isNaN(new Date(appt.appointment_date).getTime()))
                               ? new Date(appt.appointment_date).toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" })
                               : "—"}
                           </div>
                           <div style={{ fontSize:12, color:"#9CA3AF", marginTop:2 }}>
-                            {appt.appointment_time || "—"}
+                            {appt?.appointment_time || "—"}
                           </div>
                         </td>
 
                         {/* Status */}
                         <td style={styles.td}>
-                          <StatusBadge status={appt.status} />
+                          <StatusBadge status={appt?.status} />
                         </td>
 
                         {/* Actions */}
                         <td style={styles.td}>
                           <div style={{ display:"flex", gap:7 }}>
                             <button
-                              onClick={() => navigate(`/admin/viewappointment/${appt.id}`)}
+                              onClick={() => navigate(`/admin/viewappointment/${appt?.id}`)}
                               style={{ background:"#EFF6FF", color:"#185FA5", border:"none", padding:"8px 14px", borderRadius:8, fontSize:13, fontWeight:600, cursor:"pointer" }}
                             >
                               View
                             </button>
                             <button
-                              onClick={() => navigate(`/admin/editappointment/${appt.id}`)}
+                              onClick={() => navigate(`/admin/editappointment/${appt?.id}`)}
                               style={{ background:"#F0FDF4", color:"#15803D", border:"none", padding:"8px 14px", borderRadius:8, fontSize:13, fontWeight:600, cursor:"pointer" }}
                             >
                               Edit
                             </button>
                             <button
-                              onClick={() => handleDelete(appt.id)}
+                              onClick={() => handleDelete(appt?.id)}
                               style={{ background:"#FFF1F2", color:"#BE123C", border:"none", padding:"8px 14px", borderRadius:8, fontSize:13, fontWeight:600, cursor:"pointer" }}
                             >
                               Delete

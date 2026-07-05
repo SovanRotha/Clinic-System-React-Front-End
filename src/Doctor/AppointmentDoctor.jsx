@@ -179,7 +179,7 @@ export default function AppointmentDoctor() {
           {stats.map((s) => (
             <div
               key={s.label}
-              className={`bg-gradient-to-br ${s.color} rounded-2xl p-5 text-white shadow-sm`}
+              className={`bg-linear-to-br ${s.color} rounded-2xl p-5 text-white shadow-sm`}
             >
               <div className={`w-9 h-9 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}>
                 {s.icon}
@@ -244,7 +244,7 @@ export default function AppointmentDoctor() {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <div
-                              className={`h-9 w-9 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-sm font-bold flex-shrink-0`}
+                              className={`h-9 w-9 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-sm font-bold shrink-0`}
                             >
                               {initials}
                             </div>

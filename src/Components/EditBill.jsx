@@ -18,26 +18,36 @@ function EditBill() {
     const fetchBill = async () => {
         try {
             const token = localStorage.getItem("token");
+            if (!token) {
+                throw new Error("Authentication token missing");
+            }
+
             const response = await fetch(`http://127.0.0.1:8000/api/bill/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: "application/json",
                 },
             });
-            const data = await response.json();
-            const consultFee = parseFloat(data.data.consultation_fee) || 0;
-            const medicineFee = parseFloat(data.data.medicine_fee) || 0;
+
+            if (!response.ok) {
+                throw new Error("Failed to load bill");
+            }
+
+            const data = await response.json().catch(() => ({}));
+            const billData = data.data || {};
+            const consultFee = parseFloat(billData.consultation_fee) || 0;
+            const medicineFee = parseFloat(billData.medicine_fee) || 0;
             setBill({
-                patient_id: data.data.patient_id || "",
-                appointment_id: data.data.appointment_id || "",
+                patient_id: billData.patient_id || "",
+                appointment_id: billData.appointment_id || "",
                 consultation_fee: consultFee,
                 medicine_fee: medicineFee,
                 total_amount: consultFee + medicineFee,
-                payment_status: (data.data.payment_status || "unpaid").toLowerCase(),
+                payment_status: (billData.payment_status || "unpaid").toLowerCase(),
             });
         } catch (error) {
             console.error("Error fetching bill:", error);
-            alert("Failed to load bill");
+            alert(error.message || "Failed to load bill");
         } finally {
             setLoading(false);
         }

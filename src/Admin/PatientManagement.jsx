@@ -46,19 +46,34 @@ function PatientManagement() {
   const perPage = 8;
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) { setError("Missing authentication token."); setLoading(false); return; }
+    const loadPatients = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("Missing authentication token.");
+        }
 
-    fetch("http://127.0.0.1:8000/api/patients", {
-      headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-    })
-      .then((res) => res.json())
-      .then((data) => {
+        const res = await fetch("http://127.0.0.1:8000/api/patients", {
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+        });
+
+        if (!res.ok) {
+          throw new Error("Unable to load patients.");
+        }
+
+        const data = await res.json().catch(() => null);
         const arr = Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : [];
         setPatients(arr);
-      })
-      .catch(() => setError("Unable to load patients."))
-      .finally(() => setLoading(false));
+        setError("");
+      } catch (err) {
+        setError(err.message || "Unable to load patients.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPatients();
   }, []);
 
   const filtered = patients.filter((p) => {
@@ -77,15 +92,28 @@ function PatientManagement() {
   const maleCount   = patients.filter((p) => p.gender?.toLowerCase() === "male").length;
   const femaleCount = patients.filter((p) => p.gender?.toLowerCase() === "female").length;
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (!window.confirm("Delete this patient?")) return;
-    const token = localStorage.getItem("token");
-    fetch(`http://127.0.0.1:8000/api/patients/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-    })
-      .then((res) => { if (res.ok) setPatients((prev) => prev.filter((p) => p.id !== id)); })
-      .catch(() => alert("Network error."));
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Missing authentication token.");
+      }
+
+      const res = await fetch(`http://127.0.0.1:8000/api/patients/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete patient.");
+      }
+
+      setPatients((prev) => prev.filter((p) => p.id !== id));
+      setError("");
+    } catch (err) {
+      setError(err.message || "Network error.");
+    }
   };
 
   return (

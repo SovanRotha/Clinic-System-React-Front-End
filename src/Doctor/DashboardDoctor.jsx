@@ -205,7 +205,7 @@ export default function DashboardDoctor() {
           {statCards.map((s) => (
             <div key={s.label} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
               <div className="flex items-start justify-between mb-3">
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${s.gradient} flex items-center justify-center text-white shadow-sm`}>
+                <div className={`w-10 h-10 rounded-xl bg-linear-to-br ${s.gradient} flex items-center justify-center text-white shadow-sm`}>
                   {s.icon}
                 </div>
                 <span className={`text-xs font-semibold ${s.badgeColor} flex items-center gap-0.5`}>
@@ -258,7 +258,7 @@ export default function DashboardDoctor() {
                         </td>
                         <td className="px-6 py-3">
                           <div className="flex items-center gap-2.5">
-                            <div className={`w-8 h-8 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-xs font-bold flex-shrink-0`}>
+                            <div className={`w-8 h-8 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-xs font-bold shrink-0`}>
                               {initials(patCode)}
                             </div>
                             <div>
@@ -304,7 +304,7 @@ export default function DashboardDoctor() {
                         {i === 0 ? "Up Next" : formatTime(a.appointment_time)}
                       </p>
                       <div className="flex items-center gap-2">
-                        <div className={`w-7 h-7 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-xs font-bold flex-shrink-0`}>
+                        <div className={`w-7 h-7 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-xs font-bold shrink-0`}>
                           {initials(patCode)}
                         </div>
                         <div>
@@ -356,7 +356,7 @@ export default function DashboardDoctor() {
                         <td className="px-6 py-3 text-xs text-slate-400 font-mono">{p.patient_code}</td>
                         <td className="px-6 py-3">
                           <div className="flex items-center gap-2">
-                            <div className={`w-7 h-7 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-xs font-bold flex-shrink-0`}>
+                            <div className={`w-7 h-7 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-xs font-bold shrink-0`}>
                               {initials(p.user?.name || p.patient_code)}
                             </div>
                             <div>

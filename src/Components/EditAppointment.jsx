@@ -22,10 +22,18 @@ function EditAppointment() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("Authentication token missing");
+        }
+
         const appointmentRes = await fetch(`http://127.0.0.1:8000/api/appointment/${id}`, {
           headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
         });
-        const appointmentData = await appointmentRes.json();
+        if (!appointmentRes.ok) {
+          throw new Error("Failed to load appointment data");
+        }
+
+        const appointmentData = await appointmentRes.json().catch(() => ({}));
         const appointment = appointmentData.data || appointmentData.appointment;
         setEditAppointment({
           patient_id: appointment.patient_id || "",
@@ -40,13 +48,17 @@ function EditAppointment() {
           fetch("http://127.0.0.1:8000/api/doctor", { headers: { Authorization: `Bearer ${token}` } }),
           fetch("http://127.0.0.1:8000/api/patients", { headers: { Authorization: `Bearer ${token}` } }),
         ]);
-        const doctorData = await doctorRes.json();
-        const patientData = await patientRes.json();
+        if (!doctorRes.ok || !patientRes.ok) {
+          throw new Error("Failed to load patient or doctor options");
+        }
+
+        const doctorData = await doctorRes.json().catch(() => ({}));
+        const patientData = await patientRes.json().catch(() => ({}));
         setDoctors(doctorData.doctors || doctorData.data || []);
         setPatients(patientData.patients || patientData.data || []);
       } catch (error) {
         console.error(error);
-        alert("Failed to load appointment data");
+        alert(error.message || "Failed to load appointment data");
       } finally {
         setLoading(false);
       }

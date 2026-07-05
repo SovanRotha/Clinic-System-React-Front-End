@@ -290,16 +290,16 @@ export default function AdminDashboard() {
                         fetch(`${BASE}/doctor`, { headers }),
                         fetch(`${BASE}/appointment`, { headers }),
                         fetch(`${BASE}/bill`, { headers }),
-                        fetch(`${BASE}/consultation`, { headers }).catch(() => ({ json: () => ({ data: [] }) })),
+                        fetch(`${BASE}/consultation`, { headers }).catch(() => ({ ok: false, json: () => ({ data: [] }) })),
                     ]);
 
                 const [patientData, doctorData, appData, billData, consultData] =
                     await Promise.all([
-                        patientRes.json(),
-                        doctorRes.json(),
-                        appRes.json(),
-                        billRes.json(),
-                        consultRes.json(),
+                        patientRes.ok ? patientRes.json().catch(() => ({})) : Promise.resolve({}),
+                        doctorRes.ok ? doctorRes.json().catch(() => ({})) : Promise.resolve({}),
+                        appRes.ok ? appRes.json().catch(() => ({})) : Promise.resolve({}),
+                        billRes.ok ? billRes.json().catch(() => ({})) : Promise.resolve({}),
+                        consultRes.ok ? consultRes.json().catch(() => ({})) : Promise.resolve({ data: [] }),
                     ]);
 
                 const patientsList = patientData.data || [];

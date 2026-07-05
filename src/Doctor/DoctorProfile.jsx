@@ -35,7 +35,7 @@ function formatTime(t) {
 function InfoRow({ icon, label, value }) {
   return (
     <div className="flex items-center gap-3 py-3 border-b border-slate-100 last:border-0">
-      <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
+      <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
         <span className="text-slate-400">{icon}</span>
       </div>
       <div>
@@ -48,7 +48,7 @@ function InfoRow({ icon, label, value }) {
 
 function StatCard({ label, value, icon, color, iconBg }) {
   return (
-    <div className={`bg-gradient-to-br ${color} rounded-2xl p-5 text-white shadow-sm`}>
+    <div className={`bg-linear-to-br ${color} rounded-2xl p-5 text-white shadow-sm`}>
       <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center mb-3`}>
         {icon}
       </div>
@@ -140,7 +140,7 @@ export default function DoctorProfile() {
             {/* Profile Hero Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
               {/* Banner */}
-              <div className="h-28 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
+              <div className="h-28 bg-linear-to-r from-blue-500 via-indigo-500 to-purple-500" />
 
               {/* Avatar + Name */}
               <div className="px-6 pb-6">
@@ -153,7 +153,7 @@ export default function DoctorProfile() {
                         className="w-20 h-20 rounded-2xl border-4 border-white shadow-md object-cover"
                       />
                     ) : (
-                      <div className="w-20 h-20 rounded-2xl border-4 border-white shadow-md bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-2xl font-bold">
+                      <div className="w-20 h-20 rounded-2xl border-4 border-white shadow-md bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-2xl font-bold">
                         {initials}
                       </div>
                     )}

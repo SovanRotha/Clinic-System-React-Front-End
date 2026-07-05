@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const AVATAR_COLORS = [
-  { bg: "#DBEAFE", text: "#1D4ED8" },
+  { bg: "#DBEAFE", text: "#185FA5" },
   { bg: "#FEF3C7", text: "#92400E" },
   { bg: "#F3E8FF", text: "#7E22CE" },
   { bg: "#DCFCE7", text: "#166534" },
@@ -58,7 +58,7 @@ function MiniCalendar() {
     <div style={styles.sideCard}>
       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14 }}>
         <span style={{ fontSize:16, fontWeight:600, color:"#1a1a2e" }}>Calendar</span>
-        <span style={{ fontSize:13, color:"#2563eb", cursor:"pointer" }}>View full</span>
+        <span style={{ fontSize:13, color:"#185FA5", cursor:"pointer" }}>View full</span>
       </div>
       <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2, textAlign:"center" }}>
         {MINI_CAL_DAYS.map((d,i) => (
@@ -67,7 +67,7 @@ function MiniCalendar() {
         {MINI_CAL_NUMS.map((n) => (
           <div key={n} style={{ display:"flex", alignItems:"center", justifyContent:"center", padding:"4px 0" }}>
             {n === TODAY_NUM ? (
-              <span style={{ width:28, height:28, borderRadius:"50%", background:"#2563eb", color:"#fff", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:600 }}>{n}</span>
+              <span style={{ width:28, height:28, borderRadius:"50%", background:"#185FA5", color:"#fff", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:600 }}>{n}</span>
             ) : (
               <span style={{ fontSize:13, color:"#374151" }}>{n}</span>
             )}
@@ -146,7 +146,7 @@ const styles = {
     gap: 7,
   },
   btnBook: {
-    background: "#2563eb",
+    background: "#185FA5",
     color: "#fff",
     border: "none",
     padding: "10px 18px",
@@ -236,7 +236,7 @@ function TabButton({ label, active, count, onClick }) {
         fontWeight: active ? 600 : 400,
         cursor: "pointer",
         border: active ? "none" : "1px solid #E5E7EB",
-        background: active ? "#2563eb" : "#fff",
+        background: active ? "#185FA5" : "#fff",
         color: active ? "#fff" : "#6B7280",
         transition: "all 0.15s",
       }}
@@ -325,7 +325,7 @@ function ReceptionistAppointment() {
         {/* Breadcrumb */}
         <div style={styles.breadcrumb}>
           Dashboard &nbsp;›&nbsp;{" "}
-          <span style={{ color: "#2563eb" }}>Appointments</span>
+          <span style={{ color: "#185FA5" }}>Appointments</span>
         </div>
 
         {/* Top bar */}
@@ -486,7 +486,7 @@ function ReceptionistAppointment() {
                           <div style={{ display:"flex", gap:7 }}>
                             <button
                               onClick={() => navigate(`/receptionist/viewappointment/${appt.id}`)}
-                              style={{ background:"#EFF6FF", color:"#1D4ED8", border:"none", padding:"8px 14px", borderRadius:8, fontSize:13, fontWeight:600, cursor:"pointer" }}
+                              style={{ background:"#EFF6FF", color:"#185FA5", border:"none", padding:"8px 14px", borderRadius:8, fontSize:13, fontWeight:600, cursor:"pointer" }}
                             >
                               View
                             </button>
@@ -526,7 +526,7 @@ function ReceptionistAppointment() {
         <div style={{ ...styles.sideCard, display:"flex", alignItems:"center", gap:12 }}>
           <div style={{
             width:44, height:44, borderRadius:"50%",
-            background:"#DBEAFE", color:"#1D4ED8",
+            background:"#DBEAFE", color:"#185FA5",
             display:"flex", alignItems:"center", justifyContent:"center",
             fontSize:16, fontWeight:700, flexShrink:0,
           }}>
@@ -543,7 +543,7 @@ function ReceptionistAppointment() {
 
         {/* Check Doctor Availability */}
         <div style={{
-          background:"#2563eb", borderRadius:14, padding:"18px",
+          background:"#185FA5", borderRadius:14, padding:"18px",
           color:"#fff", display:"flex", flexDirection:"column", gap:10,
         }}>
           <div style={{ fontSize:16, fontWeight:700 }}>Check Doctor Availability</div>
@@ -551,7 +551,7 @@ function ReceptionistAppointment() {
             View real-time slots for emergency bookings.
           </div>
           <button style={{
-            background:"#fff", color:"#2563eb", border:"none",
+            background:"#fff", color:"#185FA5", border:"none",
             borderRadius:8, padding:"10px 0", fontSize:13, fontWeight:700,
             cursor:"pointer", width:"100%",
           }}>

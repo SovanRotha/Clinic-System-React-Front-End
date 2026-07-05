@@ -87,7 +87,7 @@ export default function AdminSidebar() {
     }, [location.pathname]);
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-100 min-h-screen flex flex-col flex-shrink-0">
+    <aside className="w-64 bg-white border-r border-slate-100 min-h-screen flex flex-col shrink-0">
       {/* Brand */}
       <div className="px-6 pt-7 pb-6 border-b border-slate-100">
         <h1 className="text-xl font-bold text-blue-700 tracking-tight">MediFlow Clinic</h1>

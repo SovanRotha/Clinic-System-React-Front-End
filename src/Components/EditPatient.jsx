@@ -25,6 +25,9 @@ function EditPatient() {
   const fetchPatient = async () => {
     try {
       const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Authentication token missing");
+      }
 
       const response = await fetch(`http://127.0.0.1:8000/api/patients/${id}`, {
         method: "GET",
@@ -38,7 +41,7 @@ function EditPatient() {
         throw new Error("Failed to fetch patient");
       }
 
-      const result = await response.json();
+      const result = await response.json().catch(() => ({}));
 
       const patientData = result.data || result;
 
@@ -74,6 +77,9 @@ function EditPatient() {
       setSaving(true);
 
       const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Authentication token missing");
+      }
 
       const response = await fetch(`http://127.0.0.1:8000/api/patients/${id}`, {
         method: "PUT",
@@ -84,7 +90,7 @@ function EditPatient() {
         body: JSON.stringify(patient),
       });
 
-      const result = await response.json();
+      const result = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         throw new Error(result.message || "Update failed");

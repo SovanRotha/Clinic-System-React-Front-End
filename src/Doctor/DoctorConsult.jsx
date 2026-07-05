@@ -160,7 +160,7 @@ export default function DoctorConsult() {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           {stats.map((s) => (
-            <div key={s.label} className={`bg-gradient-to-br ${s.color} rounded-2xl p-5 text-white shadow-sm`}>
+            <div key={s.label} className={`bg-linear-to-br ${s.color} rounded-2xl p-5 text-white shadow-sm`}>
               <div className={`w-9 h-9 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}>
                 {s.icon}
               </div>
@@ -250,7 +250,7 @@ export default function DoctorConsult() {
                         {/* Patient */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className={`h-10 w-10 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-sm font-bold flex-shrink-0`}>
+                            <div className={`h-10 w-10 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-sm font-bold shrink-0`}>
                               {initials(name)}
                             </div>
                             <div>
@@ -278,7 +278,7 @@ export default function DoctorConsult() {
                         {/* Diagnosis */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                            <Stethoscope size={12} className="text-slate-400 flex-shrink-0" />
+                            <Stethoscope size={12} className="text-slate-400 shrink-0" />
                             <span className="truncate max-w-[140px]">{c.diagnosis || "N/A"}</span>
                           </div>
                         </td>
@@ -286,7 +286,7 @@ export default function DoctorConsult() {
                         {/* Reason */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                            <FileText size={12} className="text-slate-400 flex-shrink-0" />
+                            <FileText size={12} className="text-slate-400 shrink-0" />
                             <span className="truncate max-w-[120px]">{appt.reason || "—"}</span>
                           </div>
                         </td>

@@ -46,7 +46,7 @@ function StatCard({ label, value, accent }) {
     const cls = accents[accent] || accents.default;
     return (
         <div
-            className={`bg-gradient-to-br ${cls} border rounded-2xl p-5 flex flex-col gap-1 shadow-sm`}
+            className={`bg-linear-to-br ${cls} border rounded-2xl p-5 flex flex-col gap-1 shadow-sm`}
         >
             <p className="text-xs font-semibold uppercase tracking-widest opacity-60">
                 {label}

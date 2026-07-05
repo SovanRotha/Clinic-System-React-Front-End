@@ -5,6 +5,7 @@ import { LayoutDashboard, UserRound, CalendarClock, CreditCard, LogOut } from "l
 const NAV_ITEMS = [
     { label: "Dashboard", icon: <LayoutDashboard size={18} />, path: "/receptionist", matchPaths: ["/receptionist"] },
     { label: "Patients", icon: <UserRound size={18} />, path: "/receptionist/patients", matchPaths: ["/receptionist/patients", "/receptionist/viewpatient"] },
+    { label: "Users", icon: <UserRound size={18} />, path: "/receptionist/users", matchPaths: ["/receptionist/users", "/receptionist/viewuser"] },
     { label: "Appointments", icon: <CalendarClock size={18} />, path: "/receptionist/appointments", matchPaths: ["/receptionist/appointments", "/receptionist/addappointment", "/receptionist/editappointment"] },
     { label: "Bills", icon: <CreditCard size={18} />, path: "/receptionist/bills", matchPaths: ["/receptionist/bills", "/receptionist/viewbill"] },
 ];
@@ -44,7 +45,7 @@ export default function ReceptionistSidebar() {
     }, [location.pathname]);
 
     return (
-        <aside className="w-64 bg-white border-r border-slate-100 min-h-screen flex flex-col flex-shrink-0">
+        <aside className="w-64 bg-white border-r border-slate-100 min-h-screen flex flex-col shrink-0">
             <div className="px-6 pt-7 pb-6 border-b border-slate-100">
                 <h1 className="text-xl font-bold text-blue-700 tracking-tight">MediFlow Clinic</h1>
                 <p className="text-xs text-slate-400 mt-0.5 font-medium">Reception Desk</p>

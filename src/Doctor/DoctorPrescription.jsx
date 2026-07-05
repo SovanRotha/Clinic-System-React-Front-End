@@ -129,7 +129,7 @@ export default function DoctorPrescription() {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           {stats.map((s) => (
-            <div key={s.label} className={`bg-gradient-to-br ${s.color} rounded-2xl p-5 text-white shadow-sm`}>
+            <div key={s.label} className={`bg-linear-to-br ${s.color} rounded-2xl p-5 text-white shadow-sm`}>
               <div className={`w-9 h-9 rounded-xl ${s.iconBg} flex items-center justify-center mb-3`}>
                 {s.icon}
               </div>
@@ -197,7 +197,7 @@ export default function DoctorPrescription() {
                         {/* Patient */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className={`h-10 w-10 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-sm font-bold flex-shrink-0`}>
+                            <div className={`h-10 w-10 rounded-full ${color.bg} ${color.text} flex items-center justify-center text-sm font-bold shrink-0`}>
                               {initials(patient.patient_code)}
                             </div>
                             <div>
@@ -216,7 +216,7 @@ export default function DoctorPrescription() {
                         {/* Medicine */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                            <div className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
                               <Pill size={13} className="text-blue-500" />
                             </div>
                             <span className="font-semibold text-slate-700 text-sm">{rx.medicine_name || "—"}</span>
@@ -235,11 +235,11 @@ export default function DoctorPrescription() {
                         {/* Diagnosis */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                            <Stethoscope size={12} className="text-slate-400 flex-shrink-0" />
-                            <span className="truncate max-w-[150px]">{consult.diagnosis || "—"}</span>
+                            <Stethoscope size={12} className="text-slate-400 shrink-0" />
+                            <span className="truncate max-w-37.5">{consult.diagnosis || "—"}</span>
                           </div>
                           {consult.symptoms && (
-                            <p className="text-xs text-slate-400 mt-0.5 truncate max-w-[150px]">{consult.symptoms}</p>
+                            <p className="text-xs text-slate-400 mt-0.5 truncate max-w-37.5">{consult.symptoms}</p>
                           )}
                         </td>
 
@@ -331,7 +331,7 @@ export default function DoctorPrescription() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-6 text-white">
+            <div className="bg-linear-to-br from-blue-500 to-indigo-600 p-6 text-white">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
