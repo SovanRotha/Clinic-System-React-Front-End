@@ -68,7 +68,7 @@ function EditUser() {
           throw new Error("Missing authentication token.");
         }
 
-        const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+        const res = await fetch(`https://clinic-system-back-end.onrender.com/api/users/${id}`, {
           headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
         });
 
@@ -107,7 +107,7 @@ function EditUser() {
         throw new Error("Missing authentication token.");
       }
 
-      const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+      const res = await fetch(`https://clinic-system-back-end.onrender.com/api/users/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

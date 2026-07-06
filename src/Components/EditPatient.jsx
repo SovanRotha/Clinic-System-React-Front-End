@@ -29,7 +29,7 @@ function EditPatient() {
         throw new Error("Authentication token missing");
       }
 
-      const response = await fetch(`http://127.0.0.1:8000/api/patients/${id}`, {
+      const response = await fetch(`https://clinic-system-back-end.onrender.com/api/patients/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ function EditPatient() {
         throw new Error("Authentication token missing");
       }
 
-      const response = await fetch(`http://127.0.0.1:8000/api/patients/${id}`, {
+      const response = await fetch(`https://clinic-system-back-end.onrender.com/api/patients/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

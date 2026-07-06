@@ -22,7 +22,7 @@ function AddAppointment() {
           throw new Error("Authentication token not found.");
         }
 
-        const respDoctors = await fetch("http://127.0.0.1:8000/api/doctor", {
+        const respDoctors = await fetch("https://clinic-system-back-end.onrender.com/api/doctor", {
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
         if (!respDoctors.ok) {
@@ -31,7 +31,7 @@ function AddAppointment() {
         const dataDoctors = await respDoctors.json().catch(() => ({}));
         setDoctors(Array.isArray(dataDoctors.doctors) ? dataDoctors.doctors : Array.isArray(dataDoctors) ? dataDoctors : []);
 
-        const respPatients = await fetch("http://127.0.0.1:8000/api/patients", {
+        const respPatients = await fetch("https://clinic-system-back-end.onrender.com/api/patients", {
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         });
         if (!respPatients.ok) {
@@ -72,7 +72,7 @@ function AddAppointment() {
         patient_id: Number(addAppointment.patient_id),
         doctor_id: Number(addAppointment.doctor_id),
       };
-      const res = await fetch("http://127.0.0.1:8000/api/appointment", {
+      const res = await fetch("https://clinic-system-back-end.onrender.com/api/appointment", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),

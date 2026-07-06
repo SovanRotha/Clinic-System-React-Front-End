@@ -72,7 +72,7 @@ export default function AppointmentDoctor() {
 
   useEffect(() => {
     if (!token) return;
-    fetch("http://127.0.0.1:8000/api/AppointmentDoctor", {
+    fetch("https://clinic-system-back-end.onrender.com/api/AppointmentDoctor", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())

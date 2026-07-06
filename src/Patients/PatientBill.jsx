@@ -392,7 +392,7 @@ function PatientBill() {
             setLoading(false);
             return;
         }
-        fetch("http://127.0.0.1:8000/api/my-bills", {
+        fetch("https://clinic-system-back-end.onrender.com/api/my-bills", {
             method: "GET",
             headers: {
                 Accept: "application/json",

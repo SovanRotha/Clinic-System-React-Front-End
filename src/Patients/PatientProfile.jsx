@@ -34,7 +34,7 @@ export default function PatientProfile() {
     }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/patient-profile/${user.id}`, {
+      const res = await fetch(`https://clinic-system-back-end.onrender.com/api/patient-profile/${user.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",

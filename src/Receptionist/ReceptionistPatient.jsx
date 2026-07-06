@@ -87,7 +87,7 @@ function ReceptionistPatient() {
     const fetchPatients = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:8000/api/patients", {
+        const response = await fetch("https://clinic-system-back-end.onrender.com/api/patients", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -110,7 +110,7 @@ function ReceptionistPatient() {
     if (!window.confirm("Are you sure you want to delete this patient?")) return;
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8000/api/patients/${id}`, {
+      const response = await fetch(`https://clinic-system-back-end.onrender.com/api/patients/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

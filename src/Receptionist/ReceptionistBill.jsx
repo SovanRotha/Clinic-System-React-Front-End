@@ -261,7 +261,7 @@ export default function ReceptionistBilling() {
       try {
         const token = localStorage.getItem("token");
         if (!token) { setLoading(false); return; }
-        const res = await fetch("http://127.0.0.1:8000/api/bill", {
+        const res = await fetch("https://clinic-system-back-end.onrender.com/api/bill", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

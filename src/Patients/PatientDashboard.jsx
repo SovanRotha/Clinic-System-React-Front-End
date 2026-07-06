@@ -135,10 +135,10 @@ function PatientDashboard() {
         if (!token) { setLoading(false); return; }
 
         Promise.all([
-            fetch("http://127.0.0.1:8000/api/my-appointments",  { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } }).then(r => r.json()),
-            fetch("http://127.0.0.1:8000/api/my-consultations", { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } }).then(r => r.json()),
-            fetch("http://127.0.0.1:8000/api/my-prescriptions", { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } }).then(r => r.json()),
-            fetch("http://127.0.0.1:8000/api/my-bills",         { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } }).then(r => r.json()),
+            fetch("https://clinic-system-back-end.onrender.com/api/my-appointments",  { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } }).then(r => r.json()),
+            fetch("https://clinic-system-back-end.onrender.com/api/my-consultations", { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } }).then(r => r.json()),
+            fetch("https://clinic-system-back-end.onrender.com/api/my-prescriptions", { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } }).then(r => r.json()),
+            fetch("https://clinic-system-back-end.onrender.com/api/my-bills",         { headers: { Authorization: `Bearer ${token}`, Accept: "application/json" } }).then(r => r.json()),
         ])
             .then(([appointments, consultations, prescriptions, bills]) => {
                 setData({

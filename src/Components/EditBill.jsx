@@ -22,7 +22,7 @@ function EditBill() {
                 throw new Error("Authentication token missing");
             }
 
-            const response = await fetch(`http://127.0.0.1:8000/api/bill/${id}`, {
+            const response = await fetch(`https://clinic-system-back-end.onrender.com/api/bill/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: "application/json",
@@ -82,7 +82,7 @@ function EditBill() {
         setSaving(true);
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`http://127.0.0.1:8000/api/bill/${id}`, {
+            const response = await fetch(`https://clinic-system-back-end.onrender.com/api/bill/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

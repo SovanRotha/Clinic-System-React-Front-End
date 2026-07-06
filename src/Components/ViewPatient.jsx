@@ -70,7 +70,7 @@ export default function ViewPatient() {
     }
 
     try {
-      const patientResponse = await fetch(`http://127.0.0.1:8000/api/patients/${id}`, {
+      const patientResponse = await fetch(`https://clinic-system-back-end.onrender.com/api/patients/${id}`, {
         headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
       });
 
@@ -84,10 +84,10 @@ export default function ViewPatient() {
       setPatient(patientRecord);
 
       const [appointmentList, consultationList, prescriptionList, billList] = await Promise.all([
-        fetchRecords(`http://127.0.0.1:8000/api/appointment?patient_id=${id}`, token),
-        fetchRecords(`http://127.0.0.1:8000/api/consultation?patient_id=${id}`, token),
-        fetchRecords(`http://127.0.0.1:8000/api/prescription?patient_id=${id}`, token),
-        fetchRecords(`http://127.0.0.1:8000/api/bill?patient_id=${id}`, token),
+        fetchRecords(`https://clinic-system-back-end.onrender.com/api/appointment?patient_id=${id}`, token),
+        fetchRecords(`https://clinic-system-back-end.onrender.com/api/consultation?patient_id=${id}`, token),
+        fetchRecords(`https://clinic-system-back-end.onrender.com/api/prescription?patient_id=${id}`, token),
+        fetchRecords(`https://clinic-system-back-end.onrender.com/api/bill?patient_id=${id}`, token),
       ]);
 
       setAppointments(appointmentList);

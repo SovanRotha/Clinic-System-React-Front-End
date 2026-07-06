@@ -26,7 +26,7 @@ function EditAppointment() {
           throw new Error("Authentication token missing");
         }
 
-        const appointmentRes = await fetch(`http://127.0.0.1:8000/api/appointment/${id}`, {
+        const appointmentRes = await fetch(`https://clinic-system-back-end.onrender.com/api/appointment/${id}`, {
           headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
         });
         if (!appointmentRes.ok) {
@@ -45,8 +45,8 @@ function EditAppointment() {
         });
 
         const [doctorRes, patientRes] = await Promise.all([
-          fetch("http://127.0.0.1:8000/api/doctor", { headers: { Authorization: `Bearer ${token}` } }),
-          fetch("http://127.0.0.1:8000/api/patients", { headers: { Authorization: `Bearer ${token}` } }),
+          fetch("https://clinic-system-back-end.onrender.com/api/doctor", { headers: { Authorization: `Bearer ${token}` } }),
+          fetch("https://clinic-system-back-end.onrender.com/api/patients", { headers: { Authorization: `Bearer ${token}` } }),
         ]);
         if (!doctorRes.ok || !patientRes.ok) {
           throw new Error("Failed to load patient or doctor options");
@@ -90,7 +90,7 @@ function EditAppointment() {
         patient_id: Number(editAppointment.patient_id),
         doctor_id: Number(editAppointment.doctor_id),
       };
-      const response = await fetch(`http://127.0.0.1:8000/api/appointment/${id}`, {
+      const response = await fetch(`https://clinic-system-back-end.onrender.com/api/appointment/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),

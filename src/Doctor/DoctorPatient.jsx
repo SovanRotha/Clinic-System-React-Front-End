@@ -56,7 +56,7 @@ export default function DoctorPatient() {
 
   useEffect(() => {
     if (!token) { setError("Authentication token is missing."); setLoading(false); return; }
-    fetch("http://127.0.0.1:8000/api/patients", {
+    fetch("https://clinic-system-back-end.onrender.com/api/patients", {
       headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
     })
       .then((res) => res.json())

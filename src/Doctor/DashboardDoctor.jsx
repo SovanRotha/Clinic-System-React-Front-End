@@ -103,11 +103,11 @@ export default function DashboardDoctor() {
     if (!token) { setLoading(false); return; }
 
     Promise.all([
-      fetch("http://127.0.0.1:8000/api/doctor/profile",       { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => null),
-      fetch("http://127.0.0.1:8000/api/AppointmentDoctor",     { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []),
-      fetch("http://127.0.0.1:8000/api/patients",              { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []),
-      fetch("http://127.0.0.1:8000/api/ConsultationDoctor",    { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []),
-      fetch("http://127.0.0.1:8000/api/PrescriptionDoctor",    { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []),
+      fetch("https://clinic-system-back-end.onrender.com/api/doctor/profile",       { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => null),
+      fetch("https://clinic-system-back-end.onrender.com/api/AppointmentDoctor",     { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []),
+      fetch("https://clinic-system-back-end.onrender.com/api/patients",              { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []),
+      fetch("https://clinic-system-back-end.onrender.com/api/ConsultationDoctor",    { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []),
+      fetch("https://clinic-system-back-end.onrender.com/api/PrescriptionDoctor",    { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => []),
     ]).then(([profile, appts, pats, consults, rxs]) => {
       setDoctor(profile?.doctor || profile || null);
       setAppointments(Array.isArray(appts) ? appts : appts?.data || []);

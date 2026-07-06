@@ -59,7 +59,7 @@ function AddPatient() {
       setLoadingUsers(false);
       return;
     }
-    fetch("http://127.0.0.1:8000/api/users?role=patient", {
+    fetch("https://clinic-system-back-end.onrender.com/api/users?role=patient", {
       headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
     })
       .then((res) => { if (!res.ok) throw new Error("Unauthorized"); return res.json(); })
@@ -78,7 +78,7 @@ function AddPatient() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://127.0.0.1:8000/api/patients", {
+      const res = await fetch("https://clinic-system-back-end.onrender.com/api/patients", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

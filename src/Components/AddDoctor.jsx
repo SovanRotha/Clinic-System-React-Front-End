@@ -70,7 +70,7 @@ function AddDoctor() {
       try {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No authentication token found. Please login first.");
-        const response = await fetch("http://127.0.0.1:8000/api/doctor-users", {
+        const response = await fetch("https://clinic-system-back-end.onrender.com/api/doctor-users", {
           headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -98,7 +98,7 @@ function AddDoctor() {
     try {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No authentication token found. Please login first.");
-      const response = await fetch("http://127.0.0.1:8000/api/doctor", {
+      const response = await fetch("https://clinic-system-back-end.onrender.com/api/doctor", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(doctor),

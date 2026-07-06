@@ -30,7 +30,7 @@ function EditDoctor() {
                 }
 
                 const response = await fetch(
-                    `http://127.0.0.1:8000/api/doctor/${id}`,
+                    `https://clinic-system-back-end.onrender.com/api/doctor/${id}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -85,7 +85,7 @@ function EditDoctor() {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                `http://127.0.0.1:8000/api/doctor/${id}`,
+                `https://clinic-system-back-end.onrender.com/api/doctor/${id}`,
                 {
                     method: "PUT",
                     headers: {

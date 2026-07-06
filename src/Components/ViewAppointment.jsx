@@ -16,7 +16,7 @@ function ViewAppointment() {
         }
 
         const response = await fetch(
-          `http://127.0.0.1:8000/api/appointment/${id}`,
+          `https://clinic-system-back-end.onrender.com/api/appointment/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
