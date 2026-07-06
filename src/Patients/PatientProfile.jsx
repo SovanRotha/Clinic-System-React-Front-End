@@ -65,18 +65,21 @@ export default function PatientProfile() {
   };
 
   const handleSaveProfile = async () => {
-    if (!patient?.id && !patient?.user?.id) return;
+    const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const userId = patient?.user?.id || patient?.user_id || currentUser?.id;
+    const patientId = patient?.id || userId;
+
+    if (!patientId) return;
 
     setSaving(true);
     setSaveError("");
     setSaveSuccess("");
 
     const token = localStorage.getItem("token");
-    const body = JSON.stringify(formData);
+    const payload = { ...formData, user_id: userId };
     const updateCandidates = [
-      { url: `http://127.0.0.1:8000/api/profile`, method: "PUT" },
-      { url: `http://127.0.0.1:8000/api/profile`, method: "PATCH" },
-      { url: `http://127.0.0.1:8000/api/profile`, method: "POST" },
+      { url: `http://127.0.0.1:8000/api/patients/${patientId}`, method: "PUT" },
+      { url: `http://127.0.0.1:8000/api/patients/${patientId}`, method: "PATCH" },
     ];
 
     const sendRequest = async ({ url, method }) => {
@@ -87,7 +90,7 @@ export default function PatientProfile() {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
-        body,
+        body: JSON.stringify(payload),
       });
       const data = await res.json().catch(() => null);
       return { res, data, url, method };
@@ -97,14 +100,17 @@ export default function PatientProfile() {
       let result = null;
       for (const candidate of updateCandidates) {
         result = await sendRequest(candidate);
-        console.log("Profile save attempt:", candidate.method, candidate.url, result.res.status);
         if (result.res.ok) break;
         if (result.res.status !== 404 && result.res.status !== 405) break;
       }
 
       if (!result?.res?.ok) {
-        setSaveError(result?.data?.message || result?.data?.error || result?.res?.statusText || "Could not save profile.");
-        setSaving(false);
+        setSaveError(
+          result?.data?.message ||
+            result?.data?.error ||
+            result?.res?.statusText ||
+            "The server did not accept the profile update."
+        );
         return;
       }
 
