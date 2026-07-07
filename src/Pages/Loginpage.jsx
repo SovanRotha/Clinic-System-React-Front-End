@@ -8,6 +8,7 @@ import {
   IconEyeOff,
   IconCheck,
 } from "@tabler/icons-react";
+import { normalizeUser } from "../utils/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -63,7 +64,8 @@ export default function Login() {
 
 
   const redirectByRole = (role) => {
-    switch (role) {
+    const normalizedRole = String(role || "").trim().toLowerCase();
+    switch (normalizedRole) {
       case "admin":
         return navigate("/admin");
       case "doctor":
@@ -103,17 +105,18 @@ export default function Login() {
 
         const fetchedUser = await fetchCurrentUser(data.token);
         if (fetchedUser) {
-          if (fetchedUser.profile) fetchedUser.profile = normalizeImageUrl(fetchedUser.profile);
-          if (fetchedUser.avatar) fetchedUser.avatar = normalizeImageUrl(fetchedUser.avatar);
-          localStorage.setItem("user", JSON.stringify(fetchedUser));
-          redirectByRole(fetchedUser.role || data.role || "patient");
+          const normalizedUser = normalizeUser(fetchedUser, data.role || "patient");
+          if (normalizedUser.profile) normalizedUser.profile = normalizeImageUrl(normalizedUser.profile);
+          if (normalizedUser.avatar) normalizedUser.avatar = normalizeImageUrl(normalizedUser.avatar);
+          localStorage.setItem("user", JSON.stringify(normalizedUser));
+          redirectByRole(normalizedUser.role);
           setLoading(false);
           return;
         }
 
         // fallback: use user included in login response (if any)
         const returnedUser = data.user || data.user_data || (data.data && data.data.user) || (data.data && typeof data.data === 'object' ? data.data : null) || (data.role ? { role: data.role } : null);
-        const user = returnedUser || { role: data.role || "patient" };
+        const user = normalizeUser(returnedUser || { role: data.role || "patient" }, data.role || "patient");
         if (user) {
           if (user.profile) user.profile = normalizeImageUrl(user.profile);
           if (user.avatar) user.avatar = normalizeImageUrl(user.avatar);

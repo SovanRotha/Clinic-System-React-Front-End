@@ -123,9 +123,9 @@ export default function AdminSidebar() {
           onClick={() => {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
-            navigate("/login");
+            navigate("/");
           }}
-          className="w-full flex text-white items-center gap-3 px-3 py-3 rounded-xl bg-red-500 text-sm font-semibold text-slate-700 hover:bg-red-600 transition"
+          className="w-full flex items-center gap-3 px-3 py-3 rounded-xl bg-red-500 text-sm font-semibold text-white hover:bg-red-600 transition"
         >
           <LogOut size={18} className="text-white " />
           Logout

@@ -1,26 +1,26 @@
 import { Navigate } from 'react-router-dom';
+import { getStoredUser, normalizeRole } from '../utils/auth';
 
 function ProtectedRoute({ children, allowedRole }) {
     const token = localStorage.getItem('token');
-    const user  = JSON.parse(localStorage.getItem('user') || 'null');
+    const storedUser = getStoredUser();
+    const user = storedUser ? { ...storedUser, role: normalizeRole(storedUser.role) } : null;
 
     if (!token || !user) {
         return <Navigate to="/" replace />;
     }
- 
 
-    // ✅ Handle both string and array
-    const allowed = Array.isArray(allowedRole)
-        ? allowedRole.includes(user.role)
-        : user.role === allowedRole;
+    const allowedRoles = Array.isArray(allowedRole)
+        ? allowedRole.map(normalizeRole).filter(Boolean)
+        : [normalizeRole(allowedRole)].filter(Boolean);
 
-    
+    const isAllowed = allowedRoles.length === 0 || allowedRoles.includes(user.role);
 
-    if (allowedRole && !allowed) {
-        if (user.role === 'admin')   return <Navigate to="/admin" replace />;
-        if (user.role === 'doctor') return <Navigate to="/doctor"   replace />;
-        if (user.role === 'receptionist') return <Navigate to="/receptionist"   replace />;
-        if (user.role === 'patient') return <Navigate to="/patient"   replace />;
+    if (!isAllowed) {
+        if (user.role === 'admin') return <Navigate to="/admin" replace />;
+        if (user.role === 'doctor') return <Navigate to="/doctor" replace />;
+        if (user.role === 'receptionist') return <Navigate to="/receptionist" replace />;
+        if (user.role === 'patient') return <Navigate to="/patient" replace />;
         return <Navigate to="/" replace />;
     }
 
