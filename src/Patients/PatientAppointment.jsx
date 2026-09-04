@@ -116,12 +116,12 @@ export default function PatientAppointments() {
             Accept: "application/json",
         };
 
-        fetch(`https://clinic-system-back-end.onrender.com/api/patient-profile/${user.id}`, { headers })
+        fetch(`http://localhost:8000/api/patient-profile/${user.id}`, { headers })
             .then((res) => res.json())
             .then((data) => setPatientProfile(data.data || data))
             .catch(() => setErrorMessage("Failed to load patient profile"));
 
-        fetch(`https://clinic-system-back-end.onrender.com/api/my-appointments`, { headers })
+        fetch(`http://localhost:8000/api/my-appointments`, { headers })
             .then((res) => res.json())
             .then((data) => {
                 const items = Array.isArray(data?.data)

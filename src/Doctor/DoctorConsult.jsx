@@ -87,7 +87,7 @@ export default function DoctorConsult() {
 
   useEffect(() => {
     if (!token) { setError("Authentication token is missing."); setLoading(false); return; }
-    fetch("https://clinic-system-back-end.onrender.com/api/ConsultationDoctor", {
+    fetch("http://localhost:8000/api/ConsultationDoctor", {
       headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
     })
       .then((res) => res.json())

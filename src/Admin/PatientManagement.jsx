@@ -54,7 +54,7 @@ function PatientManagement() {
           throw new Error("Missing authentication token.");
         }
 
-        const res = await fetch("https://clinic-system-back-end.onrender.com/api/patients", {
+        const res = await fetch("http://localhost:8000/api/patients", {
           headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
         });
 
@@ -100,7 +100,7 @@ function PatientManagement() {
         throw new Error("Missing authentication token.");
       }
 
-      const res = await fetch(`https://clinic-system-back-end.onrender.com/api/patients/${id}`, {
+      const res = await fetch(`http://localhost:8000/api/patients/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
       });

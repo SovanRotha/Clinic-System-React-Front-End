@@ -13,7 +13,7 @@ import {
   Stethoscope,
 } from "lucide-react";
 
-const API_BASE = "https://clinic-system-back-end.onrender.com";
+const API_BASE = "http://localhost:8000";
 
 function normalizeImageUrl(url) {
   if (!url) return null;

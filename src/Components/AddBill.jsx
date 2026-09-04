@@ -26,13 +26,13 @@ function AddBill() {
                 }
 
                 const [pRes, aRes] = await Promise.all([
-                    fetch("https://clinic-system-back-end.onrender.com/api/patients", {
+                    fetch("http://localhost:8000/api/patients", {
                         headers: {
                             Authorization: `Bearer ${token}`,
                             Accept: "application/json",
                         },
                     }),
-                    fetch("https://clinic-system-back-end.onrender.com/api/appointment", {
+                    fetch("http://localhost:8000/api/appointment", {
                         headers: {
                             Authorization: `Bearer ${token}`,
                             Accept: "application/json",
@@ -82,7 +82,7 @@ function AddBill() {
                 medicine_fee: parseFloat(formData.medicine_fee),
             };
 
-            const res = await fetch("https://clinic-system-back-end.onrender.com/api/bill", {
+            const res = await fetch("http://localhost:8000/api/bill", {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,

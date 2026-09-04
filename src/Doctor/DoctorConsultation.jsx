@@ -2,7 +2,7 @@ import DoctorSidebar from "../Doctor/DoctorSidebar";
 import { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
-const API_BASE = "https://clinic-system-back-end.onrender.com";
+const API_BASE = "http://localhost:8000";
 const BLUE = "#1a3bcc";
 
 function calcAge(dob) {

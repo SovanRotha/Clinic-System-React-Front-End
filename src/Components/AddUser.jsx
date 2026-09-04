@@ -31,7 +31,7 @@ function AddUser() {
         throw new Error("Missing authentication token.");
       }
 
-      const res = await fetch("https://clinic-system-back-end.onrender.com/api/register", {
+      const res = await fetch("http://localhost:8000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -26,7 +26,7 @@ function AddUserAsPatient() {
     e.preventDefault();
     setSubmitting(true);
     const token = localStorage.getItem("token");
-    fetch("https://clinic-system-back-end.onrender.com/api/register", {
+    fetch("http://localhost:8000/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

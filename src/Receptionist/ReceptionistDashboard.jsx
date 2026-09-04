@@ -265,9 +265,9 @@ export default function ReceptionistDashboard() {
           Authorization: `Bearer ${token}`,
         };
         const [aRes, pRes, bRes] = await Promise.all([
-          fetch("https://clinic-system-back-end.onrender.com/api/appointment", { headers }),
-          fetch("https://clinic-system-back-end.onrender.com/api/patients", { headers }),
-          fetch("https://clinic-system-back-end.onrender.com/api/bill", { headers }),
+          fetch("http://localhost:8000/api/appointment", { headers }),
+          fetch("http://localhost:8000/api/patients", { headers }),
+          fetch("http://localhost:8000/api/bill", { headers }),
         ]);
         const [aData, pData, bData] = await Promise.all([
           aRes.json(),

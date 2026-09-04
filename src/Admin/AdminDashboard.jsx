@@ -288,7 +288,7 @@ export default function AdminDashboard() {
             setLoading(true);
             try {
                 const headers = { Authorization: `Bearer ${token}` };
-                const BASE = "https://clinic-system-back-end.onrender.com/api";
+                const BASE = "http://localhost:8000/api"; // Replace with your actual API base URL
 
                 const [patientRes, doctorRes, appRes, billRes, consultRes] =
                     await Promise.all([

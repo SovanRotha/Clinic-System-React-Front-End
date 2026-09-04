@@ -11,7 +11,7 @@ function ViewBill() {
                 const token = localStorage.getItem("token");
 
                 const res = await fetch(
-                    `https://clinic-system-back-end.onrender.com/api/bill/${id}`,
+                    `http://localhost:8000/api/bill/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,

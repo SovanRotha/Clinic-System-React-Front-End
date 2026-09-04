@@ -34,7 +34,7 @@ export default function PatientProfile() {
     }
 
     try {
-      const res = await fetch(`https://clinic-system-back-end.onrender.com/api/patient-profile/${user.id}`, {
+      const res = await fetch(`http://localhost:8000/api/patient-profile/${user.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
@@ -78,8 +78,8 @@ export default function PatientProfile() {
     const token = localStorage.getItem("token");
     const payload = { ...formData, user_id: userId };
     const updateCandidates = [
-      { url: `http://127.0.0.1:8000/api/patients/${patientId}`, method: "PUT" },
-      { url: `http://127.0.0.1:8000/api/patients/${patientId}`, method: "PATCH" },
+      { url: `http://localhost:8000/api/patients/${patientId}`, method: "PUT" },
+      { url: `http://localhost:8000/api/patients/${patientId}`, method: "PATCH" },
     ];
 
     const sendRequest = async ({ url, method }) => {
@@ -183,7 +183,7 @@ function HeroCard({ patient }) {
   const avatarSrc = profile
     ? profile.startsWith("http")
       ? profile
-      : `http://127.0.0.1:8000/storage/${profile}`
+      : `http://localhost:8000/storage/${profile}`
     : null;
 
   const initials = name

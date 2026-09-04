@@ -244,7 +244,7 @@ export default function PatientHistory() {
             return;
         }
 
-        fetch("https://clinic-system-back-end.onrender.com/api/my-consultations", {
+        fetch("http://localhost:8000/api/my-consultations", {
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "application/json",

@@ -260,19 +260,19 @@ function AppointmentManagement() {
         const token = localStorage.getItem("token");
         if (!token) { setError("Authentication token not found."); return; }
         const response = Promise.all([
-          fetch("https://clinic-system-back-end.onrender.com/api/appointment", {
+          fetch("http://localhost:8000/api/appointments", {
             headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${token}`,
             },
           }),
-          fetch("https://clinic-system-back-end.onrender.com/api/patients", {
+          fetch("http://localhost:8000/api/patients", {
             headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${token}`,
             },
           }),
-          fetch("https://clinic-system-back-end.onrender.com/api/doctor", {
+          fetch("http://localhost:8000/api/doctor", {
             headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${token}`,
@@ -300,7 +300,7 @@ function AppointmentManagement() {
     try {
       const token = localStorage.getItem("token");
       if (!token) { setError("Authentication token not found."); return; }
-      const response = await fetch(`https://clinic-system-back-end.onrender.com/api/appointment/${appointmentId}`, {
+      const response = await fetch(`http://localhost:8000/api/appointment/${appointmentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

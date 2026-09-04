@@ -72,7 +72,7 @@ function Field({
 
 export default function Register() {
   const navigate = useNavigate();
-  const API_BASE = "https://clinic-system-back-end.onrender.com";
+  const API_BASE = "http://localhost:8000";
 
   const normalizeImageUrl = (url) => {
     if (!url) return null;

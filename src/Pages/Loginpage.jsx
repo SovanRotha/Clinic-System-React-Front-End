@@ -13,7 +13,7 @@ import { normalizeUser } from "../utils/auth";
 export default function Login() {
   const navigate = useNavigate();
 
-  const API_BASE = "https://clinic-system-back-end.onrender.com";
+  const API_BASE = "http://localhost:8000";
 
   const normalizeImageUrl = (url) => {
     if (!url) return null;
@@ -85,7 +85,7 @@ export default function Login() {
 
     try {
       const response = await fetch(
-        "https://clinic-system-back-end.onrender.com/api/login",
+        "http://localhost:8000/api/login",
         {
           method: "POST",
           headers: {

@@ -320,7 +320,7 @@ export default function PatientPrescriptions() {
 
         if (!user?.id || !token) { setError("Missing authentication."); setLoading(false); return; }
 
-        fetch("https://clinic-system-back-end.onrender.com/api/my-prescriptions", {
+        fetch("http://localhost:8000/api/my-prescriptions", {
             headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
         })
             .then(res => { if (!res.ok) throw new Error(); return res.json(); })

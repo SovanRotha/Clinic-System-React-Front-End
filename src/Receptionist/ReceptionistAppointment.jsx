@@ -259,7 +259,7 @@ function ReceptionistAppointment() {
       try {
         const token = localStorage.getItem("token");
         if (!token) { setError("Authentication token not found."); return; }
-        const response = await fetch("https://clinic-system-back-end.onrender.com/api/appointment", {
+        const response = await fetch("http://localhost:8000/api/appointment", {
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
@@ -280,7 +280,7 @@ function ReceptionistAppointment() {
     try {
       const token = localStorage.getItem("token");
       if (!token) { setError("Authentication token not found."); return; }
-      const response = await fetch(`https://clinic-system-back-end.onrender.com/api/appointment/${appointmentId}`, {
+      const response = await fetch(`http://localhost:8000/api/appointment/${appointmentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
